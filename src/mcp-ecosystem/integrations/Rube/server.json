@@ -1,0 +1,46 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-07-09/server.schema.json",
+  "name": "dev.composio.rube/rube",
+  "description": "Connect your AI to 500+ apps like Gmail, Slack, GitHub, and Notion with streamable HTTP transport.",
+  "status": "active",
+  "repository": {
+    "url": "https://github.com/ComposioHQ/Rube",
+    "source": "github"
+  },
+  "version": "0.0.2",
+  "capabilities": {
+    "tools": {
+      "list": true,
+      "call": true
+    },
+    "resources": {
+      "list": true,
+      "get": true,
+      "create": true,
+      "update": true,
+      "delete": true
+    },
+    "prompts": {
+      "list": true,
+      "expand": true
+    },
+    "resource-templates": {
+      "list": true,
+      "get": true
+    }
+  },
+  "transports": [
+    {
+      "type": "http"
+    },
+    {
+      "type": "streamable-http"
+    }
+  ],
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://rube.composio.dev/mcp"
+    }
+  ]
+}

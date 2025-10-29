@@ -1,0 +1,81 @@
+// prisma/schema.prisma
+
+// Define the Prisma schema for the Rube MCP Server
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  // Relations
+  connections Connection[]
+  resources   Resource[]
+}
+
+model Connection {
+  id         String   @id @default(uuid())
+  userId     String
+  appId      String   // e.g., 'google', 'github', 'slack'
+  tokens     Json     // Store tokens as JSON
+  metadata   Json?    // Additional metadata about the connection
+  active     Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, appId])
+}
+
+model Resource {
+  id          String   @id @default(uuid())
+  userId      String
+  name        String
+  uri         String   // URI identifying the resource
+  content     String?  // Content of the resource (if applicable)
+  contentType String?  // MIME type of the resource
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model ToolCall {
+  id          String   @id @default(uuid())
+  userId      String
+  toolId      String
+  parameters  Json     // Parameters passed to the tool
+  result      Json?    // Result of the tool call
+  status      String   // 'pending', 'success', 'error'
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Session {
+  id           String   @id @default(uuid())
+  userId       String
+  refreshToken String   @unique  // Hashed refresh token
+  expiresAt    DateTime
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}

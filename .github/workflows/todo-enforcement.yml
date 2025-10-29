@@ -1,0 +1,217 @@
+name: Todo Enforcement Validation
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  todo-validation:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: |
+          npm install
+          # Install todo enforcement dependencies
+          npm install -g dotenv
+
+      - name: Load todo configuration
+        run: |
+          # Load todo enforcement configuration
+          if [ -f ".env.todo" ]; then
+            export $(cat .env.todo | grep -v '^#' | xargs)
+          fi
+          echo "TODO_ENFORCEMENT_STRICT=${TODO_ENFORCEMENT_STRICT:-false}"
+          echo "TODO_COMPLIANCE_THRESHOLD=${TODO_COMPLIANCE_THRESHOLD:-80}"
+
+      - name: Validate todo compliance
+        run: |
+          echo "🔍 Validating todo compliance..."
+
+          # Check if todo enforcement scripts exist
+          if [ ! -f "scripts/todo-enforcement-hook.js" ]; then
+            echo "❌ Todo enforcement hook not found"
+            exit 1
+          fi
+
+          # Run todo validation
+          node scripts/todo-enforcement-hook.js validate || {
+            echo "❌ Todo validation failed"
+            exit 1
+          }
+
+      - name: Check agent todo integration
+        run: |
+          echo "🤖 Checking agent todo integration..."
+
+          # Check if agents have todo integration
+          if [ -d ".qwen/agents" ]; then
+            for agent in .qwen/agents/*.json; do
+              if [ -f "$agent" ]; then
+                agent_name=$(basename "$agent" .json)
+                echo "Checking agent: $agent_name"
+                
+                # Validate agent has todo tools
+                if ! grep -q "TodoWrite" "$agent"; then
+                  echo "⚠️ Agent $agent_name missing TodoWrite tool"
+                fi
+              fi
+            done
+          fi
+
+      - name: Validate MCP bridge todo integration
+        run: |
+          echo "🌉 Validating MCP bridge todo integration..."
+
+          if [ -f "mcp.ecosystem/mcp.clients/mcp.client-bridge/src/services/TodoEnforcementService.js" ]; then
+            echo "✅ MCP bridge todo integration found"
+          else
+            echo "❌ MCP bridge todo integration missing"
+            exit 1
+          fi
+
+      - name: Generate todo compliance report
+        run: |
+          echo "📊 Generating todo compliance report..."
+
+          # Run compliance monitoring
+          node scripts/agent-todo-integration.js monitor > todo-compliance-report.json
+
+          # Display compliance metrics
+          if [ -f "todo-compliance-report.json" ]; then
+            echo "## 📊 Todo Compliance Report" >> $GITHUB_STEP_SUMMARY
+            cat todo-compliance-report.json | jq -r 'to_entries[] | "- \(.key): \(.value)"' >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Upload todo compliance report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: todo-compliance-report
+          path: todo-compliance-report.json
+
+      - name: Check todo compliance threshold
+        run: |
+          echo "🎯 Checking todo compliance threshold..."
+
+          # Extract compliance rate from report
+          if [ -f "todo-compliance-report.json" ]; then
+            compliance_rate=$(cat todo-compliance-report.json | jq -r '.complianceRate // 0')
+            threshold=${TODO_COMPLIANCE_THRESHOLD:-80}
+            
+            echo "Current compliance: ${compliance_rate}%"
+            echo "Required threshold: ${threshold}%"
+            
+            if [ "$compliance_rate" -lt "$threshold" ]; then
+              echo "❌ Todo compliance below threshold"
+              echo "::warning::Todo compliance is ${compliance_rate}%, below required ${threshold}%"
+              if [ "${TODO_ENFORCEMENT_STRICT}" = "true" ]; then
+                exit 1
+              fi
+            else
+              echo "✅ Todo compliance meets threshold"
+            fi
+          fi
+
+      - name: Comment PR with todo status
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+
+            let comment = '## 📋 Todo Enforcement Status\n\n';
+
+            if (fs.existsSync('todo-compliance-report.json')) {
+              const report = JSON.parse(fs.readFileSync('todo-compliance-report.json', 'utf8'));
+              
+              comment += `**Compliance Rate**: ${report.complianceRate || 0}%\n`;
+              comment += `**Total Agents**: ${report.totalAgents || 0}\n`;
+              comment += `**Agents with Active Todos**: ${report.agentsWithActiveTodos || 0}\n`;
+              comment += `**Total Active Todos**: ${report.totalActiveTodos || 0}\n\n`;
+              
+              if (report.complianceRate >= 80) {
+                comment += '✅ Todo compliance is acceptable\n';
+              } else {
+                comment += '⚠️ Todo compliance needs improvement\n';
+              }
+            } else {
+              comment += '❌ Todo compliance report not generated\n';
+            }
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+
+  todo-templates-validation:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      - name: Validate todo templates
+        run: |
+          echo "📝 Validating todo templates..."
+
+          if [ -f "scripts/todo-templates.js" ]; then
+            # Test template generation
+            node scripts/todo-templates.js get mcp-client-bridge process-request
+            node scripts/todo-templates.js get general read-file --filePath /test/file
+            node scripts/todo-templates.js list
+            
+            echo "✅ Todo templates validation passed"
+          else
+            echo "❌ Todo templates script not found"
+            exit 1
+          fi
+
+  integration-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      - name: Run integration tests
+        run: |
+          echo "🧪 Running todo enforcement integration tests..."
+
+          # Test todo enforcement hook
+          if [ -f "scripts/todo-enforcement-hook.js" ]; then
+            node scripts/todo-enforcement-hook.js test-operation test-agent
+          fi
+
+          # Test agent integration
+          if [ -f "scripts/agent-todo-integration.js" ]; then
+            node scripts/agent-todo-integration.js monitor
+          fi
+
+          echo "✅ Integration tests completed"

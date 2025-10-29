@@ -1,0 +1,27 @@
+{
+  "name": "mcp-platform",
+  "private": true,
+  "packageManager": "bun@1.0.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "lint": "eslint . --ext .ts,.tsx,.js,.jsx", "lint:fix": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
+    "test": "turbo test",
+    "check-types": "turbo check-types",
+    "fmt": "prettier --write .", "fmt:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.46.2",
+    "@typescript-eslint/parser": "^8.46.2",
+    "eslint": "^8.0.0",
+    "prettier": "^3.0.0",
+    "turbo": "^2.0.0",
+    "typescript": "^5.0.0",
+    "typescript-eslint": "^8.46.2"
+  }
+}
