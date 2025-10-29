@@ -11,6 +11,7 @@ import fs from "fs";
 import path from "path";
 import { spawn } from "child_process";
 import TodoEnforcementHook from "./todo-enforcement-hook.js";
+import SharedTodoService from "./shared-todo-service.js";
 
 class AgentTodoIntegration {
   constructor() {
@@ -19,6 +20,14 @@ class AgentTodoIntegration {
       repositoryPath: this.repositoryPath,
       strictMode: process.env.TODO_ENFORCEMENT_STRICT === "true",
     });
+    this.sharedTodoService = new SharedTodoService(
+      path.join(
+        this.repositoryPath,
+        "data",
+        "shared-knowledge",
+        ".mcp-shared-knowledge",
+      ),
+    );
     this.agentsPath = path.join(this.repositoryPath, ".qwen", "agents");
   }
 
@@ -254,7 +263,21 @@ class AgentTodoIntegration {
   async monitorCompliance() {
     console.log("📊 Monitoring todo compliance...");
 
-    const metrics = await this.enforcementHook.getComplianceMetrics();
+    // Get basic compliance metrics
+    const basicMetrics = await this.enforcementHook.getComplianceMetrics();
+
+    // Get detailed shared todo statistics
+    const systemStats = await this.sharedTodoService.getSystemStats();
+    const allAgents = await this.sharedTodoService.getAllAgents();
+
+    // Combine metrics
+    const metrics = {
+      ...basicMetrics,
+      systemStats: systemStats,
+      agentDetails: allAgents,
+      topPerformers: this.getTopPerformers(allAgents),
+      recentActivity: systemStats.recentActivity?.slice(0, 5) || [],
+    };
 
     console.log(`
 📈 Todo Compliance Metrics:
@@ -262,6 +285,18 @@ class AgentTodoIntegration {
   Agents with Active Todos: ${metrics.agentsWithActiveTodos}
   Total Active Todos: ${metrics.totalActiveTodos}
   Compliance Rate: ${metrics.complianceRate}%
+
+📊 System Statistics:
+  Total Todos: ${systemStats.metadata?.totalTasks || 0}
+  Active Todos: ${systemStats.metadata?.activeTasks || 0}
+  Completed Todos: ${systemStats.metadata?.completedTasks || 0}
+  Agent Count: ${systemStats.agentCount || 0}
+
+🏆 Top Performers:
+${this.formatTopPerformers(metrics.topPerformers)}
+
+📝 Recent Activity:
+${this.formatRecentActivity(metrics.recentActivity)}
     `);
 
     if (metrics.complianceRate < 80) {
@@ -271,6 +306,40 @@ class AgentTodoIntegration {
     }
 
     return metrics;
+  }
+
+  /**
+   * Get top performing agents
+   */
+  getTopPerformers(agents) {
+    return Object.entries(agents)
+      .map(([id, stats]) => ({ id, ...stats }))
+      .sort((a, b) => (b.completionRate || 0) - (a.completionRate || 0))
+      .slice(0, 5);
+  }
+
+  /**
+   * Format top performers for display
+   */
+  formatTopPerformers(performers) {
+    return performers
+      .map(
+        (agent, index) =>
+          `  ${index + 1}. ${agent.id}: ${agent.totalCompleted}/${agent.totalAssigned} (${agent.completionRate?.toFixed(1) || 0}%)`,
+      )
+      .join("\n");
+  }
+
+  /**
+   * Format recent activity for display
+   */
+  formatRecentActivity(activities) {
+    return activities
+      .map(
+        (activity) =>
+          `  ${new Date(activity.timestamp).toLocaleString()}: ${activity.action} by ${activity.agentId}`,
+      )
+      .join("\n");
   }
 
   /**

@@ -102,23 +102,63 @@ npm run docs:validate
 npm run docs:check
 ```
 
-## 🏗️ Architecture
+## 🏗️ Project Structure
+
+### Clean & Organized Layout
+
+The project follows a clean, organized structure with specification-driven development:
+
+```
+mcp-ecosystem/
+├── 📋 SPECIFICATION.md          # Main specification (source of truth)
+├── 📖 README.md                # Project entry point
+├── 📦 package.json             # Project metadata and scripts
+├── ⚙️ ecosystem.config.cjs      # PM2 configuration
+│
+├── 📋 SPECIFICATION/           # Specification system
+│   ├── constitution.md         # Foundational principles
+│   └── templates/           # Specification templates
+│
+├── 💻 src/                   # Source code
+│   ├── client/              # MCP client implementations
+│   ├── mcp-ecosystem/      # Core ecosystem code
+│   ├── shared/              # Shared utilities
+│   └── tools/              # Development tools
+│
+├── 📚 docs/                  # Documentation
+│   ├── development/         # Development guides
+│   ├── examples/           # Code examples
+│   └── [assessment reports]
+│
+├── 🛠️ tools/                 # Development and operations tools
+│   ├── scripts/            # Automation scripts
+│   ├── monitoring/         # System monitoring
+│   └── setup/             # Setup utilities
+│
+├── 🧪 tests/                 # Test files
+├── ⚙️ config/                # Configuration files
+├── 💾 data/                  # Data and knowledge storage
+├── 📦 vendor/                # Third-party dependencies
+├── 📋 specs/                 # Feature specifications
+├── 🐙 .github/              # GitHub configuration
+└── 🔧 .bin/                 # Executable binaries
+```
 
 ### Core Components
 
-1. **Documentation Sync Engine** (`scripts/documentation-sync.js`)
+1. **Documentation Sync Engine** (`tools/scripts/documentation-sync.js`)
    - Monitors Git repository for changes
    - Classifies changes by impact (critical/standard/minor)
    - Triggers automated documentation updates
    - Creates pull requests for critical changes
 
-2. **Health Monitor** (`scripts/documentation-health.js`)
+2. **Health Monitor** (`tools/scripts/documentation-health.js`)
    - Calculates documentation coverage metrics
    - Detects drift between code and documentation
    - Generates quality scores and recommendations
    - Provides real-time health reporting
 
-3. **Specification Validator** (`scripts/validate-specs.js`)
+3. **Specification Validator** (`tools/scripts/specification-validator.js`)
    - Validates specification completeness and consistency
    - Checks adherence to templates and standards
    - Identifies missing sections and metadata
@@ -130,36 +170,13 @@ npm run docs:check
    - Health reporting and notifications
    - Spec-Kit validation and testing
 
-### Directory Structure
+### Detailed Structure Documentation
 
-```
-.
-├── SPECIFICATION.md          # 📍 MAIN SPECIFICATION - Source of Truth
-├── SPECIFICATION/            # Specification system and templates
-│   ├── constitution.md       # Foundational principles and governance
-│   ├── templates/           # Standardized specification templates
-│   │   ├── spec-template.md
-│   │   ├── plan-template.md
-│   │   └── tasks-template.md
-│   └── config.json          # Specification system configuration
-├── docs/                    # Generated and maintained documentation
-│   ├── architecture/        # System architecture documentation
-│   ├── api/                 # API reference and contracts
-│   ├── development/         # Development guides and standards
-│   └── examples/            # Working examples and tutorials
-├── .github/                 # GitHub integration and workflows
-│   ├── workflows/           # CI/CD automation
-│   ├── specify.prompt.md    # AI prompts for /specify
-│   ├── plan.prompt.md       # AI prompts for /plan
-│   └── tasks.prompt.md      # AI prompts for /tasks
-├── specs/                   # Feature specifications
-│   └── 001-*/               # Individual feature specs
-├── scripts/                 # Automation and tooling
-│   ├── documentation-sync.js
-│   ├── documentation-health.js
-│   └── validate-specs.js
-└── docs/                    # Generated documentation
-```
+📖 **See**: [PROJECT_STRUCTURE_DOCUMENTATION.md](PROJECT_STRUCTURE_DOCUMENTATION.md) for complete file migration mapping and detailed directory structure.
+│ └── validate-specs.js
+└── docs/ # Generated documentation
+
+````
 
 ## 📊 Health Metrics
 
@@ -219,7 +236,7 @@ Edit `.specify/config.json`:
     "metricsRetention": 30
   }
 }
-```
+````
 
 ### GitHub Actions
 

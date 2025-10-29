@@ -169,17 +169,26 @@ class TodoEnforcementHook {
       : this.findRelevantTodos(operation, activeTodos, {})[0];
 
     if (targetTodo) {
-      const newStatus = result.success ? "completed" : "cancelled";
-      await this.todoService.updateTodoStatus(targetTodo.id, newStatus);
-
-      console.log(`📋 Updated todo ${targetTodo.id} status to: ${newStatus}`);
-
-      // If operation was successful and there are more todos, activate next one
       if (result.success) {
+        await this.todoService.completeTodo(targetTodo.id, agentId, {
+          result: result,
+          notes: result.message || "Operation completed successfully",
+        });
+        console.log(`✅ Completed todo ${targetTodo.id}`);
+
+        // If operation was successful and there are more todos, activate next one
         await this.activateNextTodo(agentId);
+      } else {
+        // For failed operations, we could add a comment instead of completing
+        await this.todoService.addComment(
+          targetTodo.id,
+          agentId,
+          `Operation failed: ${result.error || "Unknown error"}`,
+        );
+        console.log(`💬 Added failure comment to todo ${targetTodo.id}`);
       }
 
-      return { updated: true, todoId: targetTodo.id, newStatus };
+      return { updated: true, todoId: targetTodo.id, success: result.success };
     }
 
     return { updated: false };
@@ -193,9 +202,9 @@ class TodoEnforcementHook {
 
     if (pendingTodos.length > 0) {
       const nextTodo = pendingTodos[0]; // Get highest priority pending todo
-      await this.todoService.updateTodoStatus(nextTodo.id, "in_progress");
+      await this.todoService.startTodo(nextTodo.id, agentId);
       console.log(
-        `▶️ Activated next todo for agent ${agentId}: ${nextTodo.content}`,
+        `▶️ Activated next todo for agent ${agentId}: ${nextTodo.title}`,
       );
       return nextTodo;
     }
