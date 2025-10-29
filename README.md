@@ -1,423 +1,480 @@
-# MCP Ecosystem
+# MCP Ecosystem Documentation
 
 > **📍 Model Context Protocol (MCP) Ecosystem**  
 > A comprehensive ecosystem for building interoperable AI systems with standardized protocols, tools, and documentation.
 
-## 🎯 Specification-Driven Development
+## 📚 Table of Contents
 
-**📋 [SPECIFICATION.md](SPECIFICATION.md)** - _Authoritative Source of Truth_
+- [Overview](#overview)
+- [Architecture](#architecture)
+- [Quick Start](#quick-start)
+- [Core Components](#core-components)
+- [API Documentation](#api-documentation)
+- [Best Practices](#best-practices)
+- [Troubleshooting](#troubleshooting)
+- [Deployment](#deployment)
+- [Contributing](#contributing)
+- [Support](#support)
 
-This ecosystem is governed by a comprehensive specification that defines:
+## 🎯 Overview
 
-- **System Architecture** - Component design and relationships
-- **Protocol Standards** - MCP protocol specifications and compliance
-- **Development Standards** - Coding practices and quality requirements
-- **Documentation Requirements** - Living documentation standards
-- **Governance Processes** - Decision-making and change management
+The MCP Ecosystem is a comprehensive platform for building interoperable AI systems with standardized protocols, tools, and documentation. The ecosystem is designed with a specification-driven approach that ensures consistency and maintainability across all components.
 
-> **⚠️ Important**: All development must align with the [SPECIFICATION.md](SPECIFICATION.md). This document is the single source of truth for the entire ecosystem.
+### Key Features
 
----
+- **Specification-Driven Development**: All development aligns with a comprehensive specification document
+- **Multi-Agent Coordination**: Unified LLM coordinator manages sessions and prevents conflicts
+- **Todo Enforcement**: Mandatory todo tracking for all operations
+- **Resource Optimization**: Lazy loading and memory management for efficient resource usage
+- **Real MCP Integration**: Direct integration with actual MCP servers instead of simulation
+- **Health Monitoring**: Real-time metrics and status reporting
+- **Comprehensive Documentation**: Living documentation with automatic synchronization
 
-## 🚀 Documentation Orchestration System
+### System Capabilities
 
-Built on the specification foundation, this system provides:
+- **MCP Server Management**: Dynamic loading and management of multiple MCP servers
+- **Coordination & Enforcement**: Multi-agent coordination with branch switching protection
+- **Resource Optimization**: Efficient memory usage with lazy loading and auto-cleanup
+- **API Integration**: REST API for all ecosystem components
+- **Real-time Monitoring**: Health checks and performance metrics
+- **Git Workflow Integration**: Coordination-aware Git operations
 
-## 🚀 Features
+## 🏗️ Architecture
 
-### Living Documentation
+The MCP Ecosystem follows a modular, service-oriented architecture:
 
-- **Intelligent Synchronization**: Automatically detects code changes and updates documentation
-- **Drift Detection**: Identifies when documentation diverges from implementation
-- **Automated Updates**: Creates pull requests for critical documentation changes
-- **Real-time Monitoring**: Continuous health monitoring and metrics
+```mermaid
+graph TB
+    subgraph "User Interface Layer"
+        A["REST API / CLI Tools"]
+    end
+    
+    subgraph "Orchestration Layer"
+        B["MCP Orchestrator"]
+        C["MCP Proxy Server"]
+        D["Coordination Server"]
+    end
+    
+    subgraph "Resource Management Layer"
+        E["Lazy Loader"]
+        F["Server Manager"]
+    end
+    
+    subgraph "MCP Servers"
+        G["File System Server"]
+        H["Mem0 Memory Server"]
+        I["Notion Server"]
+        J["Browser Tools Server"]
+        K["Google Suite Server"]
+        L["Task Server"]
+        M["Other MCP Servers"]
+    end
+    
+    subgraph "AI Integration Layer"
+        N["LLM Bridges"]
+        O["AI Models"]
+    end
+    
+    A --> B
+    B --> C
+    B --> D
+    B --> E
+    C --> F
+    F --> G
+    F --> H
+    F --> I
+    F --> J
+    F --> K
+    F --> L
+    F --> M
+    B --> N
+    N --> O
+```
 
-### Spec-Kit Integration
+### Core Architecture Components
 
-- **4-Phase Workflow**: Specify → Plan → Tasks → Implement
-- **AI-Assisted Generation**: Consistent specification creation
-- **Template System**: Standardized documentation formats
-- **Version Control**: Full audit trail of specification changes
+1. **MCP Orchestrator**: Central hub managing communication between all components
+2. **MCP Proxy Server**: Intelligent gateway routing requests to appropriate MCP servers
+3. **Coordination Server**: Multi-agent coordination with todo enforcement
+4. **Lazy Loader**: Resource-efficient server lifecycle management
+5. **Unified LLM Coordinator**: Central authority for session management and todo tracking
 
-### Quality Assurance
+For detailed architecture information, see [Architecture Documentation](docs/ARCHITECTURE.md).
 
-- **Automated Validation**: Link checking, formatting, and content validation
-- **Health Dashboard**: Real-time metrics and coverage analysis
-- **CI/CD Integration**: Quality gates and automated testing
-- **Comprehensive Reporting**: Detailed health and quality reports
-
-## 📋 Quick Start
+## 🚀 Quick Start
 
 ### Prerequisites
 
-- Node.js 18+
+- Node.js 18+ with npm 8+
 - Git repository
-- GitHub CLI (gh)
-- Python 3.11+ (for Spec-Kit)
+- GitHub CLI (gh) for specification workflows
+- Python 3.11+ for Spec-Kit (if using specification features)
+- PM2 for process management
 
 ### Installation
 
 1. **Clone and Setup**
+```bash
+git clone <repository-url>
+cd mcp-ecosystem
+npm install
+```
 
-   ```bash
-   git clone <repository-url>
-   cd mcp-documentation-orchestration
-   npm install
-   ```
+2. **Initialize Configuration**
+```bash
+npm run docs:init
+```
 
-2. **Initialize Spec-Kit**
-
-   ```bash
-   npm run docs:init
-   ```
-
-3. **Configure Git Hooks**
-   ```bash
-   npm run docs:setup-hooks
-   ```
+3. **Start the Ecosystem**
+```bash
+npm start
+```
 
 ### Basic Usage
 
-#### Check Documentation Health
-
+#### Check System Health
 ```bash
 npm run docs:health
 ```
 
-#### Sync Documentation with Code
-
+#### View Coordination Status
 ```bash
-npm run docs:sync
+node tools/scripts/llm-coordinator-unified.js status
 ```
 
-#### Validate Specifications
-
+#### Execute an Operation
 ```bash
-npm run docs:validate
+node tools/scripts/mcp-coordinator-bridge.js execute agent-id file-read --filePath ./README.md
 ```
 
-#### Run Complete Check
-
+#### Create a Todo
 ```bash
-npm run docs:check
+node tools/scripts/llm-coordinator-unified.js create dev-agent "Implement feature" --high
 ```
 
-## 🛠️ CLI Tools Suite
+## 🔧 Core Components
 
-This project provides a comprehensive suite of CLI tools for real-world development workflows. Each tool serves specific purposes in the development lifecycle.
+### MCP Orchestrator
 
-### Core CLI Tools
+The orchestrator serves as the central hub for the entire ecosystem, managing communication between all components.
 
-| Tool                           | Purpose                              | Quick Start                                              |
-| ------------------------------ | ------------------------------------ | -------------------------------------------------------- |
-| **shared-todo-cli.js**         | Collaborative task management        | `node tools/scripts/shared-todo-cli.js status`           |
-| **git-workflow.sh**            | Git workflow automation with AI      | `./tools/scripts/git-workflow.sh branch "feature"`       |
-| **coverage-analysis.js**       | Test coverage analysis & improvement | `node tools/scripts/coverage-analysis.js --threshold 80` |
-| **specification-validator.js** | Specification compliance checking    | `node tools/scripts/specification-validator.js`          |
-| **documentation-sync.js**      | Documentation synchronization        | `node tools/scripts/documentation-sync.js`               |
+**Key Features:**
+- Health check endpoints for all services
+- Intelligent LLM selection based on availability
+- Memory context management
+- Coordination API proxy endpoints
+- Real-time event streaming for multi-agent coordination
 
-### Real-World Development Workflow
+### MCP Proxy Server
 
-#### Feature Development Example
+The proxy server acts as an intelligent gateway between clients and individual MCP servers.
 
-```bash
-# 1. Create collaborative todo
-node tools/scripts/shared-todo-cli.js create dev-agent "Implement user authentication" \
-  --description="OAuth2 integration with JWT tokens" \
-  --priority=high \
-  --category=feature
+**Key Features:**
+- Tool discovery and routing
+- Lazy loading of servers on demand
+- Tool call routing based on naming conventions
+- Server lifecycle management
 
-# 2. Start Git workflow
-./tools/scripts/git-workflow.sh branch "Implement user authentication"
+### Coordination Server
 
-# 3. Work with quality checks
-node tools/scripts/coverage-analysis.js --threshold 80
-node tools/scripts/specification-validator.js
+The coordination server provides multi-agent coordination and todo enforcement capabilities.
 
-# 4. Complete and document
-node tools/scripts/shared-todo-cli.js complete dev-agent todo-123 \
-  --notes="OAuth2 flow implemented with comprehensive test coverage"
-./tools/scripts/git-workflow.sh commit "feat(auth): implement OAuth2 authentication"
-```
+**Key Features:**
+- Session management with conflict prevention
+- Todo enforcement for all operations
+- Branch switching protection
+- Git operation validation
+- Enforcement reporting
 
-#### Quality Assurance Pipeline
+### Lazy Loader
 
-```bash
-# Run comprehensive quality checks
-npm run docs:check                    # Documentation validation
-npm run coverage:check               # Coverage analysis (80% threshold)
-npm run lint                         # Code quality
-node tools/scripts/specification-validator.js  # Specification compliance
-```
+The lazy loader manages the lifecycle of MCP servers, starting them on demand and stopping them when idle.
 
-#### Incident Response
+**Key Features:**
+- On-demand server startup
+- Automatic cleanup of idle servers
+- Memory optimization for processes
+- Configurable server configurations
 
-```bash
-# Create incident todo
-node tools/scripts/shared-todo-cli.js create devops "PRODUCTION: Database timeout spike" \
-  --priority=critical \
-  --category=incident
+### Unified LLM Coordinator
 
-# Emergency Git workflow
-./tools/scripts/git-workflow.sh branch "HOTFIX: database timeouts"
+The unified coordinator serves as the central authority for both coordination and todo management.
 
-# Validate fix
-node tools/scripts/coverage-analysis.js --ci --threshold 70
-node tools/scripts/specification-validator.js
+**Key Features:**
+- Centralized session management
+- Todo enforcement for all operations
+- Multi-agent coordination
+- Persistent session state
+- Real-time status monitoring
 
-# Complete incident
-node tools/scripts/shared-todo-cli.js complete devops todo-456 \
-  --result="Database timeouts resolved, monitoring added"
-```
+For detailed component information, see [Architecture Documentation](docs/ARCHITECTURE.md).
 
-### Tool Integration
+## 📡 API Documentation
 
-The CLI tools work together to provide end-to-end development support:
+The MCP Ecosystem provides a comprehensive REST API for interacting with all system components. The API follows RESTful principles and uses JSON for request and response bodies.
 
-- **Todo System**: Tracks all work and collaboration
-- **Git Workflow**: Manages branches, commits, and PRs with AI assistance
-- **Coverage Analysis**: Ensures code quality and test completeness
-- **Specification Validator**: Maintains architectural compliance
-- **Documentation Sync**: Keeps documentation current
+### Key Endpoints
 
-For detailed usage examples and advanced features, see:
+- `GET /health` - Overall system health
+- `GET /status` - Comprehensive status of all services
+- `GET /tools` - List available proxy tools
+- `POST /tool/:toolName` - Execute specific tools
+- `POST /generate` - Generate responses with orchestration
+- `GET /events` - Server-sent events for real-time coordination
+- `GET /coordination/status` - Coordination service status
+- `POST /coordination/check-branch` - Branch switching permission check
 
-- **[CLI_TOOLS_GUIDE.md](CLI_TOOLS_GUIDE.md)** - Comprehensive CLI tools documentation
-- **[SHARED_TODO_SYSTEM_GUIDE.md](SHARED_TODO_SYSTEM_GUIDE.md)** - Todo system usage guide
-
-## 🏗️ Project Structure
-
-### Clean & Organized Layout
-
-The project follows a clean, organized structure with specification-driven development:
-
-```
-mcp-ecosystem/
-├── 📋 SPECIFICATION.md          # Main specification (source of truth)
-├── 📖 README.md                # Project entry point
-├── 📦 package.json             # Project metadata and scripts
-├── ⚙️ ecosystem.config.cjs      # PM2 configuration
-│
-├── 📋 SPECIFICATION/           # Specification system
-│   ├── constitution.md         # Foundational principles
-│   └── templates/           # Specification templates
-│
-├── 💻 src/                   # Source code
-│   ├── client/              # MCP client implementations
-│   ├── mcp-ecosystem/      # Core ecosystem code
-│   ├── shared/              # Shared utilities
-│   └── tools/              # Development tools
-│
-├── 📚 docs/                  # Documentation
-│   ├── development/         # Development guides
-│   ├── examples/           # Code examples
-│   └── [assessment reports]
-│
-├── 🛠️ tools/                 # Development and operations tools
-│   ├── scripts/            # Automation scripts
-│   ├── monitoring/         # System monitoring
-│   └── setup/             # Setup utilities
-│
-├── 🧪 tests/                 # Test files
-├── ⚙️ config/                # Configuration files
-├── 💾 data/                  # Data and knowledge storage
-├── 📦 vendor/                # Third-party dependencies
-├── 📋 specs/                 # Feature specifications
-├── 🐙 .github/              # GitHub configuration
-└── 🔧 .bin/                 # Executable binaries
-```
-
-### Core Components
-
-1. **Documentation Sync Engine** (`tools/scripts/documentation-sync.js`)
-   - Monitors Git repository for changes
-   - Classifies changes by impact (critical/standard/minor)
-   - Triggers automated documentation updates
-   - Creates pull requests for critical changes
-
-2. **Health Monitor** (`tools/scripts/documentation-health.js`)
-   - Calculates documentation coverage metrics
-   - Detects drift between code and documentation
-   - Generates quality scores and recommendations
-   - Provides real-time health reporting
-
-3. **Specification Validator** (`tools/scripts/specification-validator.js`)
-   - Validates specification completeness and consistency
-   - Checks adherence to templates and standards
-   - Identifies missing sections and metadata
-   - Generates detailed validation reports
-
-4. **CI/CD Integration** (`.github/workflows/`)
-   - Automated synchronization on code changes
-   - Quality gates and validation checks
-   - Health reporting and notifications
-   - Spec-Kit validation and testing
-
-### Detailed Structure Documentation
-
-📖 **See**: [PROJECT_STRUCTURE_DOCUMENTATION.md](PROJECT_STRUCTURE_DOCUMENTATION.md) for complete file migration mapping and detailed directory structure.
-│ └── validate-specs.js
-└── docs/ # Generated documentation
-
-````
-
-## 📊 Health Metrics
-
-The system tracks four key metrics:
-
-### Coverage (30% weight)
-
-- Percentage of components with documentation
-- API endpoints, database models, services
-- Inline documentation detection
-
-### Freshness (25% weight)
-
-- Age of documentation files
-- Stale content identification
-- Update frequency analysis
-
-### Drift (25% weight)
-
-- Undocumented API endpoints
-- Outdated specifications
-- Code-documentation misalignment
-
-### Quality (20% weight)
-
-- Broken links and formatting
-- Spelling and grammar validation
-- Template adherence
-
-## 🔧 Configuration
-
-### Sync Engine Configuration
-
-Edit `.specify/config.json`:
-
-```json
-{
-  "sync": {
-    "enabled": true,
-    "autoUpdate": true,
-    "criticalChanges": {
-      "autoPR": true,
-      "reviewers": ["documentation-team"],
-      "labels": ["documentation", "auto-generated"]
-    },
-    "standardChanges": {
-      "notifyOnly": true,
-      "slackChannel": "#documentation"
-    },
-    "minorChanges": {
-      "backgroundUpdate": true
-    }
-  },
-  "monitoring": {
-    "healthCheckInterval": 300000,
-    "driftDetection": true,
-    "metricsRetention": 30
-  }
-}
-````
-
-### GitHub Actions
-
-The system includes comprehensive CI/CD workflows:
-
-- **Documentation Synchronization**: Runs on every push and PR
-- **Quality Validation**: Checks formatting, links, and content
-- **Spec-Kit Validation**: Validates specifications and templates
-- **Health Reporting**: Generates and reports health metrics
-
-## 📝 Specification Workflow
-
-### 1. Specify (What & Why)
-
-```bash
-# Create new feature specification
-gh issue create --title "Feature: User Authentication" --body "Use /specify command"
-```
-
-### 2. Plan (How)
-
-```bash
-# Generate technical plan
-gh issue comment "Use /plan command"
-```
-
-### 3. Tasks (Breakdown)
-
-```bash
-# Create task breakdown
-gh issue comment "Use /tasks command"
-```
-
-### 4. Implement (Build)
-
-- Develop according to specifications
-- Automated sync keeps documentation updated
-- Quality gates ensure compliance
+For complete API documentation, see [API Documentation](docs/API_DOCUMENTATION.md).
 
 ## 🎯 Best Practices
 
-### Documentation Standards
-
-- All public APIs must be documented
-- Specifications precede implementation
-- Use consistent formatting and templates
-- Include examples and acceptance criteria
-
 ### Development Workflow
 
-- Run `npm run docs:check` before committing
-- Address documentation drift immediately
-- Review auto-generated PRs promptly
-- Keep specifications up to date
+1. **Specification First**: Always start with a specification before implementation
+2. **Todo Enforcement**: Create todos for all operations to maintain accountability
+3. **Session Management**: Use coordinated sessions to prevent conflicts
+4. **Resource Optimization**: Leverage lazy loading to minimize resource usage
+5. **Health Monitoring**: Regularly check system status and address issues promptly
 
-### Quality Assurance
+### Coordination Guidelines
 
-- Monitor health dashboard regularly
-- Address quality issues proactively
-- Validate specifications before implementation
-- Use automated testing for examples
+- Use the unified coordinator for all operations
+- Check coordination status before starting work
+- Assign todos to prevent duplicate work
+- Use coordination tools to prevent Git conflicts
+- Monitor session status regularly
 
-## 📈 Monitoring and Alerts
+### Resource Management
 
-### Health Dashboard
+- Start servers only when needed using lazy loading
+- Set appropriate memory limits for each process
+- Ensure idle servers are properly cleaned up
+- Monitor resource usage and optimize as needed
 
-Access real-time metrics via:
+For comprehensive best practices, see [Best Practices Guide](docs/BEST_PRACTICES.md).
+
+## 🔧 Troubleshooting
+
+### Common Issues
+
+#### Service Not Starting
+- Check if required ports are available
+- Verify dependencies are installed
+- Review configuration files and environment variables
+
+#### Coordination Conflicts
+- Complete or terminate active sessions before switching branches
+- Create appropriate todos before performing operations
+- Check coordination status before Git operations
+
+#### Server Management Issues
+- Ensure lazy loader is running
+- Verify server configurations in lazy_loader.js
+- Check port assignments and availability
+
+### Diagnostic Commands
 
 ```bash
-npm run docs:health
+# Check overall health
+curl http://localhost:3103/health
+
+# Check coordination status
+curl http://localhost:3109/api/status
+
+# List running servers
+curl http://localhost:3007/servers/status
+
+# Check process status
+pm2 list
+
+# View logs
+pm2 logs mcp-orchestrator
 ```
 
-### Automated Alerts
+For detailed troubleshooting guidance, see [Troubleshooting Guide](docs/TROUBLESHOOTING.md).
 
-- Critical drift detection creates immediate PRs
-- Quality below 80% triggers team notifications
-- Stale documentation warnings after 30 days
-- Weekly health reports to stakeholders
+## 🚢 Deployment
+
+### PM2 Deployment (Recommended)
+
+The ecosystem uses PM2 for process management with optimized resource usage:
+
+```bash
+# Start all services
+npm start
+
+# Stop all services
+npm stop
+
+# Restart all services
+npm restart
+
+# View process status
+pm2 list
+
+# Monitor resources
+pm2 monit
+```
+
+### Docker Deployment
+
+The ecosystem can be deployed using Docker containers:
+
+```bash
+# Build and start services
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+
+# Stop services
+docker-compose down
+```
+
+### Configuration
+
+The ecosystem can be configured through environment variables:
+
+- `PORT`: Main port for the orchestrator (default: 3103)
+- `LAZY_LOADER_URL`: URL for the lazy loader service (default: http://localhost:3007)
+- `COORDINATION_URL`: URL for the coordination service (default: http://localhost:3109)
+- `MEM0_URL`: URL for the Mem0 memory service (default: http://localhost:3100)
+
+For complete deployment information, see [Deployment Guide](docs/MCP_ECOSYSTEM_DOCUMENTATION.md#deployment-guide).
 
 ## 🤝 Contributing
 
-1. Fork the repository
-2. Create feature branch (`git checkout -b feature/amazing-feature`)
-3. Run documentation checks (`npm run docs:check`)
-4. Commit changes (`git commit -m 'Add amazing feature'`)
-5. Push to branch (`git push origin feature/amazing-feature`)
-6. Open Pull Request
+We welcome contributions to the MCP Ecosystem! Here's how you can help:
+
+### Git Workflow
+
+We follow a modified Git Flow branching model with semantic versioning. Please read our [Git Workflow Guide](docs/GIT_WORKFLOW.md) for complete details.
+
+#### Branching Strategy
+
+- **`main`**: Production-ready code only
+- **`develop`**: Integration branch for features
+- **`feature/*`**: Feature development (e.g., `feature/user-authentication`)
+- **`bugfix/*`**: Bug fixes for non-critical issues
+- **`hotfix/*`**: Critical fixes for production
+- **`release/v*.*.*`**: Release preparation branches
+
+#### Development Workflow
+
+1. Sync with the latest `develop` branch:
+   ```bash
+   git checkout develop
+   git pull origin develop
+   ```
+
+2. Create a feature branch:
+   ```bash
+   git checkout -b feature/amazing-feature
+   # or use the alias: git create-feature amazing-feature
+   ```
+
+3. Make your changes following coding standards
+
+4. Run checks before committing:
+   ```bash
+   npm run docs:check
+   npm run test
+   ```
+
+5. Commit your changes with a conventional commit message:
+   ```bash
+   git add .
+   git commit -m "feat(auth): add OAuth2 callback + state validation"
+   ```
+
+6. Push to your branch:
+   ```bash
+   git push origin feature/amazing-feature
+   ```
+
+7. Open a Pull Request using our [template](.github/pull_request_template.md)
+
+### Commit Message Guidelines
+
+We follow [Conventional Commits](https://www.conventionalcommits.org/) specification. Please read our [Conventional Commits Guide](docs/CONVENTIONAL_COMMITS.md) for complete details.
+
+#### Types
+
+- `feat`: A new feature
+- `fix`: A bug fix
+- `docs`: Documentation only changes
+- `style`: Changes that do not affect the meaning of the code
+- `refactor`: A code change that neither fixes a bug nor adds a feature
+- `perf`: A code change that improves performance
+- `test`: Adding missing tests or correcting existing tests
+- `build`: Changes that affect the build system or external dependencies
+- `ci`: Changes to CI configuration files and scripts
+- `chore`: Other changes that don't modify src or test files
+- `revert`: Reverts a previous commit
+- `mcp`: MCP protocol related changes
+- `coordination`: Coordination system changes
+- `orchestration`: Orchestration system changes
+- `spec`: Specification related changes
+
+### Code Standards
+
+- Follow the existing code style and patterns
+- Write comprehensive tests for new features
+- Update documentation for any changes
+- Ensure all tests pass before submitting
+- Use ESLint and Prettier for code formatting (automatically applied via pre-commit hook)
+- Write clear, descriptive commit messages following conventional commits
+
+### Issue Reporting
+
+When reporting issues, please include:
+- Clear description of the problem
+- Steps to reproduce the issue
+- Expected vs actual behavior
+- Environment information (OS, Node.js version, etc.)
+- Relevant log output or error messages
+
+## 🆘 Support
+
+### Documentation
+- [Main Documentation](docs/MCP_ECOSYSTEM_DOCUMENTATION.md)
+- [Architecture](docs/ARCHITECTURE.md)
+- [API Documentation](docs/API_DOCUMENTATION.md)
+- [Best Practices](docs/BEST_PRACTICES.md)
+- [Troubleshooting](docs/TROUBLESHOOTING.md)
+
+### Community Support
+- **Issues**: [GitHub Issues](https://github.com/lorenzorasmussen/mcp-ecosystem/issues) - Report bugs and request features
+- **Discussions**: [GitHub Discussions](https://github.com/lorenzorasmussen/mcp-ecosystem/discussions) - Ask questions and share knowledge
+- **Pull Requests**: Contribute fixes and improvements
+
+### Diagnostic Tools
+```bash
+# Run comprehensive health check
+npm run docs:health
+
+# Validate specifications
+npm run docs:validate
+
+# Run complete system check
+npm run docs:check
+
+# Run coverage analysis
+npm run coverage:check
+```
 
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🆘 Support
+## 🙏 Acknowledgments
 
-- **Issues**: [GitHub Issues](https://github.com/mcp-ecosystem/documentation-orchestration/issues)
-- **Documentation**: [Project Wiki](https://github.com/mcp-ecosystem/documentation-orchestration/wiki)
-- **Discussions**: [GitHub Discussions](https://github.com/mcp-ecosystem/documentation-orchestration/discussions)
+- The Model Context Protocol community for the foundational MCP specification
+- The open-source community for the various libraries and tools used in this ecosystem
+- Contributors and users who help improve the system through feedback and contributions
 
 ---
 
 **Built with ❤️ by the MCP Documentation Team**
+
+For the most up-to-date information, visit our [GitHub repository](https://github.com/lorenzorasmussen/mcp-ecosystem).
