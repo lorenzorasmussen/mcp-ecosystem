@@ -1,0 +1,19 @@
+{
+  "mcpServers": {
+    "mcp-superassistant": {
+      "type": "local",
+      "command": "npx @srbhptl39/mcp-superassistant-proxy@latest  ",
+      "tools": [
+        "*PUSH",
+        "ADD",
+        "CLONE",
+        "PULL",
+        "COMMIT",
+        "STAGE"
+      ],
+      "args": [
+        "npx @srbhptl39/mcp-superassistant-proxy@latest \n--config ~/config.json \\\n--outputTransport streamableHttp \\\n--stateful \\\n--port 3006 \\\n--streamableHttpPath \"/mcp\" \\\n--cors \\"
+      ]
+    }
+  }
+}

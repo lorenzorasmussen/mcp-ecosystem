@@ -1,0 +1,223 @@
+name: Source Control Best Practices
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  commit-message-validation:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate commit messages
+        run: |
+          # Get commit messages for this PR or push
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            COMMITS=$(git log --format="%s" origin/${{ github.base_ref }}..HEAD)
+          else
+            COMMITS=$(git log --format="%s" -1)
+          fi
+
+          echo "Checking commit messages..."
+          echo "$COMMITS"
+
+          # Validate conventional commits
+          while IFS= read -r commit; do
+            if [[ -n "$commit" ]]; then
+              # Check if commit follows conventional commit format
+              if [[ ! "$commit" =~ ^(feat|fix|docs|style|refactor|test|chore|perf|ci|build|revert)(\(.+\))?: .+ ]]; then
+                echo "❌ Invalid commit message format: $commit"
+                echo "Expected format: type(scope): description"
+                echo "Types: feat, fix, docs, style, refactor, test, chore, perf, ci, build, revert"
+                exit 1
+              else
+                echo "✅ Valid commit message: $commit"
+              fi
+            fi
+          done <<< "$COMMITS"
+
+  branch-protection-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check branch protection
+        run: |
+          echo "🔍 Checking branch protection rules..."
+
+          # This would typically use GitHub API to check branch protection
+          # For now, we'll just validate the branch name
+          BRANCH_NAME="${{ github.ref_name }}"
+
+          if [[ "$BRANCH_NAME" =~ ^(main|master|develop|release/.+|hotfix/.+|feature/.+|bugfix/.+)$ ]]; then
+            echo "✅ Valid branch name: $BRANCH_NAME"
+          else
+            echo "⚠️ Branch name doesn't follow convention: $BRANCH_NAME"
+            echo "Expected patterns: main, develop, release/*, hotfix/*, feature/*, bugfix/*"
+          fi
+
+  file-naming-validation:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Validate file naming conventions
+        run: |
+          echo "🔍 Checking file naming conventions..."
+
+          # Check for files with improper naming
+          INVALID_FILES=$(find . -type f -name "* *" -o -name "*[A-Z]*" | grep -v ".git" | grep -v "node_modules" | grep -v ".pnpm")
+
+          if [ -n "$INVALID_FILES" ]; then
+            echo "❌ Files with improper naming found:"
+            echo "$INVALID_FILES"
+            echo "Files should use kebab-case and avoid spaces"
+            exit 1
+          else
+            echo "✅ All files follow naming conventions"
+          fi
+
+          # Check for proper file extensions
+          JS_FILES=$(find . -name "*.js" -not -path "./node_modules/*" -not -path "./.pnpm/*")
+          TS_FILES=$(find . -name "*.ts" -not -path "./node_modules/*" -not -path "./.pnpm/*")
+
+          echo "📊 Found $(echo "$JS_FILES" | wc -l) JavaScript files"
+          echo "📊 Found $(echo "$TS_FILES" | wc -l) TypeScript files"
+
+  repository-structure-validation:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Validate repository structure
+        run: |
+          echo "🔍 Checking repository structure..."
+
+          # Check for required directories
+          REQUIRED_DIRS=("docs" "specs" "scripts" ".github" ".specify")
+
+          for dir in "${REQUIRED_DIRS[@]}"; do
+            if [ -d "$dir" ]; then
+              echo "✅ Required directory exists: $dir"
+            else
+              echo "⚠️ Optional directory missing: $dir"
+            fi
+          done
+
+          # Check for required files
+          REQUIRED_FILES=("README.md" ".gitignore" "package.json")
+
+          for file in "${REQUIRED_FILES[@]}"; do
+            if [ -f "$file" ]; then
+              echo "✅ Required file exists: $file"
+            else
+              echo "❌ Required file missing: $file"
+              exit 1
+            fi
+          done
+
+  dependency-security-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run security audit
+        run: npm audit --audit-level=moderate
+
+      - name: Check for outdated dependencies
+        run: npm outdated || true
+
+  code-quality-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run linting
+        run: |
+          if npm run lint --silent 2>/dev/null; then
+            echo "✅ Linting passed"
+          else
+            echo "⚠️ No lint script found or linting failed"
+          fi
+
+      - name: Run formatting check
+        run: |
+          if npm run format:check --silent 2>/dev/null; then
+            echo "✅ Code formatting is correct"
+          else
+            echo "⚠️ No format:check script found or formatting issues detected"
+          fi
+
+  release-readiness-check:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && github.base_ref == 'main'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check release readiness
+        run: |
+          echo "🔍 Checking release readiness..."
+
+          # Check if version has been updated
+          if [ -f "package.json" ]; then
+            CURRENT_VERSION=$(node -p "require('./package.json').version")
+            echo "Current version: $CURRENT_VERSION"
+            
+            # Check if there are changes that would require a version bump
+            COMMITS=$(git log --format="%s" origin/main..HEAD)
+            
+            if echo "$COMMITS" | grep -q "feat:"; then
+              echo "🚀 Feature changes detected - consider minor version bump"
+            fi
+            
+            if echo "$COMMITS" | grep -q "fix:"; then
+              echo "🐛 Bug fixes detected - consider patch version bump"
+            fi
+            
+            if echo "$COMMITS" | grep -q "BREAKING CHANGE"; then
+              echo "💥 Breaking changes detected - major version bump required"
+            fi
+          fi
+
+          # Check if CHANGELOG has been updated
+          if [ -f "CHANGELOG.md" ]; then
+            echo "✅ CHANGELOG.md exists"
+          else
+            echo "⚠️ No CHANGELOG.md found"
+          fi

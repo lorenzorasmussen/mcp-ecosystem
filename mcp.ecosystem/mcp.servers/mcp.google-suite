@@ -1,0 +1,4 @@
+#!/bin/bash
+# Top-level access script for Google Suite server
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+exec node "$DIR/categories/communication/google-suite/google_suite_server.js" "$@"

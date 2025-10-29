@@ -1,0 +1,131 @@
+name: Documentation Quality Checks
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+    paths:
+      - "**.md"
+      - "docs/**"
+      - ".specify/**"
+
+jobs:
+  documentation-quality:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: |
+          npm ci
+          npm install -g markdownlint-cli2
+          npm install -g write-good
+
+      - name: Check markdown formatting
+        run: |
+          markdownlint-cli2 "**/*.md" "#node_modules"
+
+      - name: Check writing quality
+        run: |
+          find . -name "*.md" -not -path "./node_modules/*" -not -path "./.pnpm/*" | xargs write-good
+
+      - name: Check for broken links
+        run: |
+          npm install -g markdown-link-check
+          find . -name "*.md" -not -path "./node_modules/*" -not -path "./.pnpm/*" -exec markdown-link-check {} \;
+
+      - name: Validate specification templates
+        run: |
+          node scripts/validate-specs.js
+
+      - name: Check documentation coverage
+        run: |
+          node scripts/documentation-health.js --coverage
+
+      - name: Generate documentation metrics
+        run: |
+          node scripts/documentation-health.js --metrics > docs/metrics.json
+
+      - name: Upload metrics
+        uses: actions/upload-artifact@v4
+        with:
+          name: documentation-metrics
+          path: docs/metrics.json
+
+      - name: Comment PR with results
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const metrics = JSON.parse(fs.readFileSync('docs/metrics.json', 'utf8'));
+
+            const comment = `
+            ## 📊 Documentation Quality Report
+
+            **Coverage**: ${metrics.coverage}%  
+            **Freshness**: ${metrics.freshness}%  
+            **Drift**: ${metrics.drift}%  
+            **Quality**: ${metrics.quality}%  
+            **Overall Score**: ${metrics.score}%
+
+            ${metrics.score >= 80 ? '✅ Documentation quality is acceptable' : '❌ Documentation needs improvement'}
+            `;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+
+  spell-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      - name: Install cspell
+        run: npm install -g cspell
+
+      - name: Run spell check
+        run: |
+          cspell "**/*.md" --config .cspell.json
+
+  accessibility-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      - name: Install accessibility checker
+        run: npm install -g pa11y-ci
+
+      - name: Check generated docs accessibility
+        run: |
+          if [ -d "docs/_site" ]; then
+            pa11y-ci --sitemap http://localhost:4000/sitemap.xml
+          else
+            echo "No generated docs found, skipping accessibility check"
+          fi

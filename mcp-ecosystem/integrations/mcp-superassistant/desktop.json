@@ -1,0 +1,5 @@
+{
+  "allowed_commands": ["ls", "pwd", "whoami", "date", "uptime", "df", "ps"],
+  "command_timeout": 30000,
+  "max_output_length": 10000
+}

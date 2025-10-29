@@ -1,0 +1,61 @@
+{
+  "servers": {
+    "notion": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@notionhq/notion-mcp-server"
+      ],
+      "env": {
+        "OPENAPI_MCP_HEADERS": {
+          "Authorization": "Bearer {{YOUR_NOTION_TOKEN}}",
+          "Notion-Version": "2022-06-28"
+        }
+      }
+    },
+    "playwright": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "@playwright/mcp@latest"
+      ]
+    },
+    "sequential thinking": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ]
+    },
+    "memory": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-memory"
+      ],
+      "env": {
+        "MEMORY_FILE_PATH": "{{/Users/lorenzorasmussen/MCP-Hub/data/memory/shared_memory.json}}"
+      }
+    },
+    "mcp-web": {
+      "type": "http",
+      "url": "http://localhost:3333",
+      "headers": {}
+    },
+            "markitdown": {
+              "type": "stdio",
+              "command": "uvx",
+              "args": [
+                "markitdown-mcp"
+              ]
+            },
+            "gemini-bridge": {
+              "command": "node",
+              "args": ["~/.local/share/mcp/src/servers/gemini_bridge.js"],
+              "lazy": true,
+              "description": "Direct Gemini AI integration"
+            }
+          }}

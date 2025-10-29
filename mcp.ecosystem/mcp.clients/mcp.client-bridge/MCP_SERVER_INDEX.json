@@ -1,0 +1,272 @@
+{
+  "last_updated": "2024-10-29T03:00:00Z",
+  "servers": [
+    {
+      "id": "mcp.gemini-bridge",
+      "name": "Gemini AI Bridge",
+      "description": "Bridge to Google's Gemini AI for advanced language processing",
+      "category": "AI",
+      "tools": [
+        {
+          "name": "gemini_generate_content",
+          "description": "Generate content using Gemini AI",
+          "parameters": {
+            "prompt": "string",
+            "model": "string?",
+            "temperature": "number?"
+          }
+        },
+        {
+          "name": "gemini_analyze_image",
+          "description": "Analyze images using Gemini Vision",
+          "parameters": {
+            "image_url": "string",
+            "prompt": "string"
+          }
+        }
+      ]
+    },
+    {
+      "id": "mcp.mem0",
+      "name": "Mem0 Memory Service",
+      "description": "Memory management and context service for LLMs",
+      "category": "Memory",
+      "tools": [
+        {
+          "name": "mem0_store_memory",
+          "description": "Store a memory item for a session",
+          "parameters": {
+            "sessionId": "string",
+            "content": "string",
+            "category": "string?"
+          }
+        },
+        {
+          "name": "mem0_recall_memory",
+          "description": "Recall memories for a session",
+          "parameters": {
+            "sessionId": "string",
+            "category": "string?",
+            "limit": "number?"
+          }
+        },
+        {
+          "name": "mem0_search_memory",
+          "description": "Search memories across all sessions",
+          "parameters": {
+            "query": "string",
+            "category": "string?",
+            "limit": "number?"
+          }
+        }
+      ]
+    },
+    {
+      "id": "mcp.notion",
+      "name": "Notion Integration",
+      "description": "Integration with Notion workspace for document management",
+      "category": "Productivity",
+      "tools": [
+        {
+          "name": "notion_search",
+          "description": "Search Notion pages and databases",
+          "parameters": {
+            "query": "string",
+            "limit": "number?"
+          }
+        },
+        {
+          "name": "notion_get_page",
+          "description": "Get a specific Notion page by ID",
+          "parameters": {
+            "pageId": "string"
+          }
+        },
+        {
+          "name": "notion_create_page",
+          "description": "Create a new Notion page",
+          "parameters": {
+            "databaseId": "string",
+            "properties": "object"
+          }
+        }
+      ]
+    },
+    {
+      "id": "mcp.google-suite",
+      "name": "Google Suite Integration",
+      "description": "Integration with Google Suite services (Gmail, Docs, Sheets, etc.)",
+      "category": "Communication",
+      "tools": [
+        {
+          "name": "gmail_list_messages",
+          "description": "List Gmail messages",
+          "parameters": {
+            "query": "string?",
+            "maxResults": "number?"
+          }
+        },
+        {
+          "name": "gmail_send_message",
+          "description": "Send a Gmail message",
+          "parameters": {
+            "to": "string",
+            "subject": "string",
+            "body": "string"
+          }
+        },
+        {
+          "name": "docs_create_document",
+          "description": "Create a new Google Doc",
+          "parameters": {
+            "title": "string",
+            "content": "string?"
+          }
+        }
+      ]
+    },
+    {
+      "id": "mcp.task",
+      "name": "Task Management Service",
+      "description": "Task creation and management service",
+      "category": "Productivity",
+      "tools": [
+        {
+          "name": "task_create_task",
+          "description": "Create a new task",
+          "parameters": {
+            "title": "string",
+            "description": "string?",
+            "dueDate": "string?"
+          }
+        },
+        {
+          "name": "task_list_tasks",
+          "description": "List all tasks",
+          "parameters": {
+            "status": "string?"
+          }
+        },
+        {
+          "name": "task_complete_task",
+          "description": "Mark a task as complete",
+          "parameters": {
+            "taskId": "string"
+          }
+        }
+      ]
+    },
+    {
+      "id": "mcp.browsertools",
+      "name": "Browser Automation Tools",
+      "description": "Tools for browser automation and web scraping",
+      "category": "Web",
+      "tools": [
+        {
+          "name": "browser_navigate",
+          "description": "Navigate to a URL",
+          "parameters": {
+            "url": "string"
+          }
+        },
+        {
+          "name": "browser_click_element",
+          "description": "Click on a web element",
+          "parameters": {
+            "selector": "string"
+          }
+        },
+        {
+          "name": "browser_extract_text",
+          "description": "Extract text from a web page",
+          "parameters": {
+            "selector": "string?"
+          }
+        }
+      ]
+    },
+    {
+      "id": "mcp.filesystem",
+      "name": "File System Operations",
+      "description": "Tools for file system operations",
+      "category": "System",
+      "tools": [
+        {
+          "name": "filesystem_read_file",
+          "description": "Read contents of a file",
+          "parameters": {
+            "path": "string"
+          }
+        },
+        {
+          "name": "filesystem_write_file",
+          "description": "Write content to a file",
+          "parameters": {
+            "path": "string",
+            "content": "string"
+          }
+        },
+        {
+          "name": "filesystem_list_dir",
+          "description": "List contents of a directory",
+          "parameters": {
+            "path": "string"
+          }
+        }
+      ]
+    },
+    {
+      "id": "mcp.webfetch",
+      "name": "Web Content Fetching",
+      "description": "Tools for fetching web content",
+      "category": "Web",
+      "tools": [
+        {
+          "name": "webfetch_fetch_url",
+          "description": "Fetch content from a URL",
+          "parameters": {
+            "url": "string"
+          }
+        },
+        {
+          "name": "webfetch_scrape_page",
+          "description": "Scrape structured data from a web page",
+          "parameters": {
+            "url": "string",
+            "selectors": "object"
+          }
+        }
+      ]
+    },
+    {
+      "id": "mcp.desktop-control",
+      "name": "Desktop Automation Control",
+      "description": "Tools for desktop automation and control",
+      "category": "System",
+      "tools": [
+        {
+          "name": "desktop_take_screenshot",
+          "description": "Take a screenshot of the desktop",
+          "parameters": {
+            "filename": "string?"
+          }
+        },
+        {
+          "name": "desktop_move_mouse",
+          "description": "Move mouse to coordinates",
+          "parameters": {
+            "x": "number",
+            "y": "number"
+          }
+        },
+        {
+          "name": "desktop_click_mouse",
+          "description": "Click mouse at current position",
+          "parameters": {
+            "button": "string?"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+[
+  {
+    "name": "Filesystem",
+    "tools": []
+  },
+  {
+    "name": "Git",
+    "tools": []
+  },
+  {
+    "name": "SQLite",
+    "tools": []
+  },
+  {
+    "name": "Brave Search",
+    "tools": []
+  },
+  {
+    "name": "GitHub",
+    "tools": []
+  },
+  {
+    "name": "Perplexity",
+    "tools": []
+  },
+  {
+    "name": "Notion",
+    "tools": []
+  },
+  {
+    "name": "Memory",
+    "tools": []
+  }
+]

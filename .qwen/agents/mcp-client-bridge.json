@@ -1,0 +1,37 @@
+{
+  "name": "mcp-client-bridge",
+  "version": "1.0.0",
+  "description": "MCP Client Bridge - Intelligent intermediary between users and MCP servers",
+  "last_updated": "2025-10-29T15:35:49.772Z",
+  "capabilities": [
+    "natural_language_processing",
+    "server_routing",
+    "connection_management",
+    "caching",
+    "persistent_storage",
+    "security",
+    "monitoring"
+  ],
+  "servers": [
+    "mcp.gemini-bridge",
+    "mcp.mem0",
+    "mcp.notion",
+    "mcp.google-suite",
+    "mcp.task",
+    "mcp.browsertools",
+    "mcp.filesystem",
+    "mcp.webfetch",
+    "mcp.desktop-control"
+  ],
+  "tools": [
+    "gemini_generate_content",
+    "mem0_store_memory",
+    "notion_search",
+    "gmail_send_message",
+    "task_create_task",
+    "browser_navigate",
+    "filesystem_read_file",
+    "webfetch_fetch_url",
+    "desktop_take_screenshot"
+  ]
+}

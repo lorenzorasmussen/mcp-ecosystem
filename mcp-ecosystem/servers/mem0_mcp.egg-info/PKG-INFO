@@ -1,0 +1,132 @@
+Metadata-Version: 2.4
+Name: mem0-mcp
+Version: 0.1.0
+Summary: Add your description here
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+Requires-Dist: httpx>=0.28.1
+Requires-Dist: mcp[cli]>=1.3.0
+Requires-Dist: mem0ai>=0.1.55
+
+# Mem0 MCP Server
+
+This is an MCP (Model Context Protocol) server implementation for Mem0 that enables local LLMs to connect to the Mem0 memory system for shared memories and context.
+
+## Features
+
+- Exposes Mem0 memory operations as MCP tools
+- Supports both cloud Mem0 API and local OpenMemory deployments
+- Enables shared memory context across multiple local LLM applications
+- Provides SSE-based communication for real-time memory operations
+
+## Prerequisites
+
+- Python 3.8+
+- Mem0 API key (for cloud usage)
+- Docker (for local deployment with OpenMemory)
+
+## Installation
+
+1. Clone this repository
+2. Initialize the `uv` environment:
+
+```bash
+uv venv
+```
+
+3. Activate the virtual environment:
+
+```bash
+source .venv/bin/activate
+```
+
+4. Install the dependencies using `uv`:
+
+```bash
+# Install in editable mode from pyproject.toml
+uv pip install -e .
+```
+
+5. Update `.env` file in the root directory with your mem0 API key:
+
+```bash
+MEM0_API_KEY=your_api_key_here
+```
+
+## Usage
+
+### Running with Cloud Mem0
+
+1. Start the MCP server:
+
+```bash
+uv run main.py
+```
+
+2. Connect your local LLM application to the MCP server at `http://localhost:8080`
+
+### Running with Local OpenMemory
+
+1. Start the OpenMemory stack:
+
+```bash
+cd ../openmemory
+docker-compose up -d
+```
+
+2. Start the MCP server:
+
+```bash
+uv run main.py
+```
+
+## MCP Tools
+
+The server exposes the following tools:
+
+- `add_memories`: Add new memories to the memory store
+- `search_memory`: Search through existing memories
+- `get_all_memories`: Retrieve all memories for a user
+- `delete_all_memories`: Delete all memories for a user
+
+## Configuration
+
+The server can be configured through environment variables:
+
+- `MEM0_API_KEY`: Your Mem0 API key (required for cloud usage)
+- `HOST`: Host to bind the server to (default: 0.0.0.0)
+- `PORT`: Port to listen on (default: 8080)
+
+## Integration with Local LLMs
+
+To integrate with local LLM applications:
+
+1. Connect to the MCP server using SSE at `/mcp/{client_name}/sse/{user_id}`
+2. Use the provided MCP tools to interact with memory operations
+3. All memory operations will be synchronized across connected applications
+
+## Architecture
+
+The MCP server acts as a bridge between local LLM applications and the Mem0 memory system:
+
+```
+Local LLM App 1 ----\
+                     \
+Local LLM App 2 -------- MCP Server ---- Mem0 Memory System
+                     /
+Local LLM App 3 ----/
+```
+
+All connected applications share the same memory context, enabling consistent personalized experiences across different tools.
+
+## Development
+
+To run the server in development mode:
+
+```bash
+uvicorn main:app --reload
+```
+
+## License
+
+MIT

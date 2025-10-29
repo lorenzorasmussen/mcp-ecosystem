@@ -1,0 +1,4 @@
+#!/bin/bash
+# Top-level access script for Webfetch server
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+exec node "$DIR/categories/file-system/webfetch/webfetch_server.js" "$@"

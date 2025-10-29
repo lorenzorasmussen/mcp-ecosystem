@@ -1,0 +1,5 @@
+{
+  "default_database": null,
+  "cache_timeout": 300000,
+  "max_results": 100
+}

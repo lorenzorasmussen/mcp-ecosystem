@@ -1,0 +1,4 @@
+#!/bin/bash
+# Top-level access script for Task server
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+exec node "$DIR/categories/productivity/task/task_server.js" "$@"
