@@ -1,0 +1,25 @@
+{
+  "version": "1.0",
+  "servers": [
+    {
+      "id": "example-server",
+      "name": "Example Server",
+      "url": "http://localhost:8080",
+      "description": "Example MCP server for demonstration",
+      "enabled": true,
+      "timeout": 30000,
+      "headers": {},
+      "capabilities": {}
+    }
+  ],
+  "globalSettings": {
+    "defaultTimeout": 30000,
+    "maxRetries": 3,
+    "retryDelay": 1000,
+    "connectionPool": {
+      "maxConnections": 10,
+      "minConnections": 2,
+      "idleTimeout": 30000
+    }
+  }
+}

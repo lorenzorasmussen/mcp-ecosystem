@@ -102,6 +102,89 @@ npm run docs:validate
 npm run docs:check
 ```
 
+## 🛠️ CLI Tools Suite
+
+This project provides a comprehensive suite of CLI tools for real-world development workflows. Each tool serves specific purposes in the development lifecycle.
+
+### Core CLI Tools
+
+| Tool                           | Purpose                              | Quick Start                                              |
+| ------------------------------ | ------------------------------------ | -------------------------------------------------------- |
+| **shared-todo-cli.js**         | Collaborative task management        | `node tools/scripts/shared-todo-cli.js status`           |
+| **git-workflow.sh**            | Git workflow automation with AI      | `./tools/scripts/git-workflow.sh branch "feature"`       |
+| **coverage-analysis.js**       | Test coverage analysis & improvement | `node tools/scripts/coverage-analysis.js --threshold 80` |
+| **specification-validator.js** | Specification compliance checking    | `node tools/scripts/specification-validator.js`          |
+| **documentation-sync.js**      | Documentation synchronization        | `node tools/scripts/documentation-sync.js`               |
+
+### Real-World Development Workflow
+
+#### Feature Development Example
+
+```bash
+# 1. Create collaborative todo
+node tools/scripts/shared-todo-cli.js create dev-agent "Implement user authentication" \
+  --description="OAuth2 integration with JWT tokens" \
+  --priority=high \
+  --category=feature
+
+# 2. Start Git workflow
+./tools/scripts/git-workflow.sh branch "Implement user authentication"
+
+# 3. Work with quality checks
+node tools/scripts/coverage-analysis.js --threshold 80
+node tools/scripts/specification-validator.js
+
+# 4. Complete and document
+node tools/scripts/shared-todo-cli.js complete dev-agent todo-123 \
+  --notes="OAuth2 flow implemented with comprehensive test coverage"
+./tools/scripts/git-workflow.sh commit "feat(auth): implement OAuth2 authentication"
+```
+
+#### Quality Assurance Pipeline
+
+```bash
+# Run comprehensive quality checks
+npm run docs:check                    # Documentation validation
+npm run coverage:check               # Coverage analysis (80% threshold)
+npm run lint                         # Code quality
+node tools/scripts/specification-validator.js  # Specification compliance
+```
+
+#### Incident Response
+
+```bash
+# Create incident todo
+node tools/scripts/shared-todo-cli.js create devops "PRODUCTION: Database timeout spike" \
+  --priority=critical \
+  --category=incident
+
+# Emergency Git workflow
+./tools/scripts/git-workflow.sh branch "HOTFIX: database timeouts"
+
+# Validate fix
+node tools/scripts/coverage-analysis.js --ci --threshold 70
+node tools/scripts/specification-validator.js
+
+# Complete incident
+node tools/scripts/shared-todo-cli.js complete devops todo-456 \
+  --result="Database timeouts resolved, monitoring added"
+```
+
+### Tool Integration
+
+The CLI tools work together to provide end-to-end development support:
+
+- **Todo System**: Tracks all work and collaboration
+- **Git Workflow**: Manages branches, commits, and PRs with AI assistance
+- **Coverage Analysis**: Ensures code quality and test completeness
+- **Specification Validator**: Maintains architectural compliance
+- **Documentation Sync**: Keeps documentation current
+
+For detailed usage examples and advanced features, see:
+
+- **[CLI_TOOLS_GUIDE.md](CLI_TOOLS_GUIDE.md)** - Comprehensive CLI tools documentation
+- **[SHARED_TODO_SYSTEM_GUIDE.md](SHARED_TODO_SYSTEM_GUIDE.md)** - Todo system usage guide
+
 ## 🏗️ Project Structure
 
 ### Clean & Organized Layout

@@ -27,9 +27,20 @@ module.exports = {
     },
     {
       name: "mcp-memory-server",
+      script: "npx",
+      args: "-y @modelcontextprotocol/server-memory",
+      instances: 1,
+      autorestart: true,
+      watch: false,
+      max_memory_restart: "130M",
+      restart_delay: 3000,
+      max_restarts: 3,
+      node_args: "--max-old-space-size=96 --optimize-for-size",
+    },
     {
       name: "opencode-bridge",
-      script: "/Users/lorenzorasmussen/.local/share/mcp/src/bridges/opencode_bridge.js",
+      script:
+        "/Users/lorenzorasmussen/.local/share/mcp/src/bridges/opencode_bridge.js",
       cwd: "/Users/lorenzorasmussen/.local/share/mcp",
       instances: 1,
       autorestart: true,
@@ -43,17 +54,27 @@ module.exports = {
         CODE_SUPERNOVA_ENDPOINT: "http://localhost:8001",
         GROK_CODE_FAST_ENDPOINT: "http://localhost:8002",
         BIG_PICKLE_ENDPOINT: "http://localhost:8003",
-        GROK4_FAST_ENDPOINT: "http://localhost:8004"
-      }
-    },      script: "npx",
-      args: "-y @modelcontextprotocol/server-memory",
+        GROK4_FAST_ENDPOINT: "http://localhost:8004",
+      },
+    },
+    {
+      name: "todo-monitoring",
+      script:
+        "/Users/lorenzorasmussen/.local/share/mcp/tools/scripts/todo-monitoring.js",
+      args: "run",
+      cwd: "/Users/lorenzorasmussen/.local/share/mcp",
       instances: 1,
       autorestart: true,
       watch: false,
-      max_memory_restart: "130M",
-      restart_delay: 3000,
+      max_memory_restart: "50M",
+      restart_delay: 5000,
       max_restarts: 3,
-      node_args: "--max-old-space-size=96 --optimize-for-size",
+      cron_restart: "0 */4 * * *", // Run every 4 hours
+      node_args: "--max-old-space-size=32",
+      env: {
+        TODO_ALERTS_ENABLED: "true",
+        TODO_ALERT_THRESHOLD: "70",
+      },
     },
   ],
 };

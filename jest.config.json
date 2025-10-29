@@ -1,0 +1,38 @@
+{
+  "testEnvironment": "node",
+  "testMatch": ["**/tests/*-cjs.test.js", "**/tests/simple-setup.js"],
+  "collectCoverage": true,
+  "collectCoverageFrom": [
+    "src/*-cjs.js",
+    "tools/scripts/documentation-*.js",
+    "!**/node_modules/**",
+    "!**/coverage/**",
+    "!**/reports/**",
+    "!**/vendor/**",
+    "!src/mcp-ecosystem/**",
+    "!tools/scripts/coverage-analysis.js"
+  ],
+  "coverageDirectory": "coverage",
+  "coverageReporters": ["text", "text-summary", "lcov", "html", "json"],
+  "coverageThreshold": {
+    "global": {
+      "branches": 70,
+      "functions": 70,
+      "lines": 70,
+      "statements": 70
+    }
+  },
+  "testPathIgnorePatterns": [
+    "/node_modules/",
+    "/coverage/",
+    "/reports/",
+    "/vendor/",
+    "/src/mcp-ecosystem/"
+  ],
+  "transformIgnorePatterns": ["/node_modules/(?!(.*\\.mjs$))"],
+  "verbose": true,
+  "moduleFileExtensions": ["js", "json"],
+  "clearMocks": true,
+  "restoreMocks": true,
+  "testTimeout": 30000
+}

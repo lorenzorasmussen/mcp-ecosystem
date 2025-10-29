@@ -1,0 +1,56 @@
+{
+  "timestamp": "2025-10-29T16:58:56.257Z",
+  "system": {
+    "totalTodos": 2,
+    "activeTodos": 0,
+    "completedTodos": 1,
+    "pendingTodos": 1,
+    "totalAgents": 1
+  },
+  "agents": {
+    "test-agent": {
+      "totalCreated": 2,
+      "totalAssigned": 0,
+      "totalCompleted": 0,
+      "activeTasks": 0,
+      "completionRate": 0,
+      "lastActivity": "2025-10-29T16:52:31.187Z",
+      "averageCompletionTime": 0
+    }
+  },
+  "compliance": {
+    "complianceRate": 0,
+    "agentsWithActiveTodos": 0,
+    "averageCompletionRate": 0
+  },
+  "performance": {
+    "averageCompletionTime": 0,
+    "fastestAgent": null,
+    "slowestAgent": null
+  },
+  "categories": {
+    "general": 2
+  },
+  "recentActivity": [
+    {
+      "id": "audit-1761756459049-gptaovu89",
+      "action": "todo_created",
+      "agentId": "test-agent",
+      "timestamp": "2025-10-29T16:47:39.049Z",
+      "details": {
+        "todoId": "todo-1761756459047-84cy6fouf",
+        "title": "Test save functionality"
+      }
+    },
+    {
+      "id": "audit-1761756751187-7aapztclc",
+      "action": "todo_created",
+      "agentId": "test-agent",
+      "timestamp": "2025-10-29T16:52:31.187Z",
+      "details": {
+        "todoId": "todo-1761756751185-wz232d2wl",
+        "title": "Test save functionality 2"
+      }
+    }
+  ]
+}

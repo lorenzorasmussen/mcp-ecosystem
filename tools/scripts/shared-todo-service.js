@@ -290,8 +290,8 @@ class SharedTodoService {
       details: completionData,
     });
 
-    await this.saveData();
     await this.updateMetadata();
+    await this.saveData();
     await this.addAuditEntry("todo_completed", agentId, {
       todoId: todoId,
       title: todo.title,
@@ -657,112 +657,106 @@ class SharedTodoService {
   }
 }
 
-// CLI interface
-const args = process.argv.slice(2);
-const command = args[0];
+// CLI interface - only run when executed directly
+if (import.meta.url === `file://${process.argv[1]}`) {
+  const runCLI = async () => {
+    const args = process.argv.slice(2);
+    const command = args[0];
 
-const service = new SharedTodoService();
+    const service = new SharedTodoService();
 
-switch (command) {
-  case "stats":
-    service.getSystemStats().then((stats) => {
-      console.log("📊 Shared Todo System Statistics:");
-      console.log(JSON.stringify(stats, null, 2));
-    });
-    break;
+    try {
+      switch (command) {
+        case "stats":
+          const stats = await service.getSystemStats();
+          console.log("📊 Shared Todo System Statistics:");
+          console.log(JSON.stringify(stats, null, 2));
+          break;
 
-  case "list":
-    const agentId = args[1];
-    service.getTodosForAgent(agentId).then((todos) => {
-      console.log(`📋 Todos for agent ${agentId || "all"}:`);
-      todos.forEach((todo) => {
-        console.log(
-          `- ${todo.id}: ${todo.title} [${todo.status}] (${todo.assignedTo || "unassigned"})`,
-        );
-      });
-    });
-    break;
+        case "list":
+          const agentId = args[1];
+          const todos = await service.getTodosForAgent(agentId);
+          console.log(`📋 Todos for agent ${agentId || "all"}:`);
+          todos.forEach((todo) => {
+            console.log(
+              `- ${todo.id}: ${todo.title} [${todo.status}] (${todo.assignedTo || "unassigned"})`,
+            );
+          });
+          break;
 
-  case "create":
-    const creator = args[1];
-    const title = args[2];
-    if (!creator || !title) {
-      console.error(
-        "Usage: node shared-todo-service.js create <agentId> <title> [description]",
-      );
-      process.exit(1);
-    }
-    const description = args.slice(3).join(" ");
-    service
-      .createTodo(
-        {
-          title: title,
-          description: description || title,
-          priority: "medium",
-        },
-        creator,
-      )
-      .then((todo) => {
-        console.log(`✅ Created todo: ${todo.id}`);
-      });
-    break;
+        case "create":
+          const creator = args[1];
+          const title = args[2];
+          if (!creator || !title) {
+            console.error(
+              "Usage: node shared-todo-service.js create <agentId> <title> [description]",
+            );
+            process.exit(1);
+          }
+          const description = args.slice(3).join(" ");
+          const todo = await service.createTodo(
+            {
+              title: title,
+              description: description || title,
+              priority: "medium",
+            },
+            creator,
+          );
+          console.log(`✅ Created todo: ${todo.id}`);
+          break;
 
-  case "assign":
-    const assigner = args[1];
-    const todoId = args[2];
-    const assignee = args[3];
-    if (!assigner || !todoId || !assignee) {
-      console.error(
-        "Usage: node shared-todo-service.js assign <assigner> <todoId> <assignee>",
-      );
-      process.exit(1);
-    }
-    service.assignTodo(todoId, assignee, assigner).then(() => {
-      console.log(`✅ Assigned todo ${todoId} to ${assignee}`);
-    });
-    break;
+        case "assign":
+          const assigner = args[1];
+          const todoId = args[2];
+          const assignee = args[3];
+          if (!assigner || !todoId || !assignee) {
+            console.error(
+              "Usage: node shared-todo-service.js assign <assigner> <todoId> <assignee>",
+            );
+            process.exit(1);
+          }
+          await service.assignTodo(todoId, assignee, assigner);
+          console.log(`✅ Assigned todo ${todoId} to ${assignee}`);
+          break;
 
-  case "start":
-    const starter = args[1];
-    const startTodoId = args[2];
-    if (!starter || !startTodoId) {
-      console.error(
-        "Usage: node shared-todo-service.js start <agentId> <todoId>",
-      );
-      process.exit(1);
-    }
-    service.startTodo(startTodoId, starter).then(() => {
-      console.log(`▶️ Started todo ${startTodoId}`);
-    });
-    break;
+        case "start":
+          const starter = args[1];
+          const startTodoId = args[2];
+          if (!starter || !startTodoId) {
+            console.error(
+              "Usage: node shared-todo-service.js start <agentId> <todoId>",
+            );
+            process.exit(1);
+          }
+          await service.startTodo(startTodoId, starter);
+          console.log(`▶️ Started todo ${startTodoId}`);
+          break;
 
-  case "complete":
-    const completer = args[1];
-    const completeTodoId = args[2];
-    if (!completer || !completeTodoId) {
-      console.error(
-        "Usage: node shared-todo-service.js complete <agentId> <todoId>",
-      );
-      process.exit(1);
-    }
-    service.completeTodo(completeTodoId, completer).then(() => {
-      console.log(`✅ Completed todo ${completeTodoId}`);
-    });
-    break;
+        case "complete":
+          const completer = args[1];
+          const completeTodoId = args[2];
+          if (!completer || !completeTodoId) {
+            console.error(
+              "Usage: node shared-todo-service.js complete <agentId> <todoId>",
+            );
+            process.exit(1);
+          }
+          await service.completeTodo(completeTodoId, completer);
+          console.log(`✅ Completed todo ${completeTodoId}`);
+          break;
 
-  case "agents":
-    service.getAllAgents().then((agents) => {
-      console.log("🤖 Agent Statistics:");
-      Object.entries(agents).forEach(([id, stats]) => {
-        console.log(
-          `${id}: ${stats.totalCompleted}/${stats.totalAssigned} completed (${stats.completionRate.toFixed(1)}%)`,
-        );
-      });
-    });
-    break;
+        case "agents":
+          const agents = await service.getAllAgents();
+          console.log("🤖 Agent Statistics:");
+          Object.entries(agents).forEach(([id, stats]) => {
+            console.log(
+              `${id}: ${stats.totalCompleted}/${stats.totalAssigned} completed (${stats.completionRate.toFixed(1)}%)`,
+            );
+          });
+          break;
 
-  default:
-    console.log(`
+        default:
+          console.log(`
 Usage: node shared-todo-service.js <command> [options]
 
 Commands:
@@ -781,7 +775,15 @@ Examples:
   node shared-todo-service.js assign admin todo-123 qwen-agent
   node shared-todo-service.js start qwen-agent todo-123
   node shared-todo-service.js complete qwen-agent todo-123
-    `);
+          `);
+      }
+    } catch (error) {
+      console.error("❌ Error:", error.message);
+      process.exit(1);
+    }
+  };
+
+  runCLI();
 }
 
 export default SharedTodoService;
