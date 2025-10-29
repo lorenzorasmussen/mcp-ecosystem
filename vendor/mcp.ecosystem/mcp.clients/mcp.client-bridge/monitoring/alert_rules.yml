@@ -1,0 +1,47 @@
+groups:
+  - name: mcp-client-bridge.rules
+    rules:
+    - alert: MCPClientBridgeDown
+      expr: up{job="mcp-client-bridge"} == 0
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "MCP Client Bridge is down"
+        description: "MCP Client Bridge has been down for more than 1 minute."
+
+    - alert: HighErrorRate
+      expr: rate(http_requests_total{status_code=~"5..",job="mcp-client-bridge"}[5m]) > 0.1
+      for: 2m
+      labels:
+        severity: warning
+      annotations:
+        summary: "High error rate on MCP Client Bridge"
+        description: "HTTP error rate is above 10% for the last 5 minutes."
+
+    - alert: HighResponseTime
+      expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket{job="mcp-client-bridge"}[5m])) > 2
+      for: 2m
+      labels:
+        severity: warning
+      annotations:
+        summary: "High response time on MCP Client Bridge"
+        description: "95th percentile response time is above 2 seconds."
+
+    - alert: HighCPUUsage
+      expr: 100 - (avg by(instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: "High CPU usage on MCP Client Bridge instance"
+        description: "CPU usage is above 80% for the last 5 minutes."
+
+    - alert: HighMemoryUsage
+      expr: (container_memory_usage_bytes{container="mcp-client-bridge"} / container_spec_memory_limit_bytes{container="mcp-client-bridge"} * 100) > 80
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: "High memory usage on MCP Client Bridge container"
+        description: "Memory usage is above 80% of the limit."

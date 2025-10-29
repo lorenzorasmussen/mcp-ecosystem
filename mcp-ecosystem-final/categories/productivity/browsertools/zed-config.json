@@ -1,0 +1,54 @@
+{
+  "name": "browsertools-server",
+  "server_command": "npx",
+  "server_args": ["@agentdeskai/browser-tools-server@1.2.0"],
+  "description": "Browser automation and web scraping tools for Zed IDE",
+  "version": "1.0.0",
+  "capabilities": {
+    "tools": [
+      {
+        "name": "browser_navigate",
+        "description": "Navigate to a URL",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "url": { "type": "string", "description": "URL to navigate to" }
+          },
+          "required": ["url"]
+        }
+      },
+      {
+        "name": "browser_click_element",
+        "description": "Click on a web element",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "selector": { "type": "string", "description": "CSS selector for the element to click" }
+          },
+          "required": ["selector"]
+        }
+      },
+      {
+        "name": "browser_extract_text",
+        "description": "Extract text from a web page",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "selector": { "type": "string", "description": "CSS selector for the element to extract text from" }
+          },
+          "required": ["selector"]
+        }
+      },
+      {
+        "name": "browser_screenshot",
+        "description": "Take a screenshot of the current page",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "filename": { "type": "string", "description": "Filename to save the screenshot as" }
+          }
+        }
+      }
+    ]
+  }
+}

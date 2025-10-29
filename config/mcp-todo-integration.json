@@ -1,0 +1,31 @@
+{
+  "enabled": true,
+  "enforcementMode": "strict",
+  "coordination": {
+    "requireSessionRegistration": true,
+    "validateBranchSwitches": true,
+    "trackOperationMetrics": true
+  },
+  "todo": {
+    "requireForOperations": [
+      "server-connect",
+      "server-disconnect",
+      "tool-execute",
+      "resource-access",
+      "prompt-generate"
+    ],
+    "autoCreateForOperations": true,
+    "categories": {
+      "server-connect": "infrastructure",
+      "server-disconnect": "infrastructure",
+      "tool-execute": "development",
+      "resource-access": "data",
+      "prompt-generate": "ai-operations"
+    }
+  },
+  "monitoring": {
+    "trackCompliance": true,
+    "generateReports": true,
+    "alertThreshold": 80
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "last_updated": "2024-10-29T10:00:00Z",
+  "servers": [
+    {
+      "id": "mcp.gemini-bridge",
+      "name": "Gemini AI Bridge",
+      "description": "MCP bridge for Gemini AI services",
+      "category": "AI",
+      "url": "http://localhost:8081",
+      "tools": [
+        {
+          "name": "generate_text",
+          "description": "Generate text using Gemini AI",
+          "parameters": [
+            {
+              "name": "prompt",
+              "type": "string",
+              "required": true
+            }
+          ]
+        },
+        {
+          "name": "analyze_content",
+          "description": "Analyze content with Gemini AI",
+          "parameters": [
+            {
+              "name": "content",
+              "type": "string",
+              "required": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mcp.filesystem",
+      "name": "File System Bridge",
+      "description": "MCP bridge for file system operations",
+      "category": "System",
+      "url": "http://localhost:8082",
+      "tools": [
+        {
+          "name": "read_file",
+          "description": "Read a file from the file system",
+          "parameters": [
+            {
+              "name": "path",
+              "type": "string",
+              "required": true
+            }
+          ]
+        },
+        {
+          "name": "write_file",
+          "description": "Write content to a file",
+          "parameters": [
+            {
+              "name": "path",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "content",
+              "type": "string",
+              "required": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mcp.git",
+      "name": "Git Bridge",
+      "description": "MCP bridge for Git operations",
+      "category": "Development",
+      "url": "http://localhost:8083",
+      "tools": [
+        {
+          "name": "git_commit",
+          "description": "Commit changes to Git repository",
+          "parameters": [
+            {
+              "name": "message",
+              "type": "string",
+              "required": true
+            }
+          ]
+        },
+        {
+          "name": "git_status",
+          "description": "Get Git repository status",
+          "parameters": []
+        }
+      ]
+    }
+  ]
+}

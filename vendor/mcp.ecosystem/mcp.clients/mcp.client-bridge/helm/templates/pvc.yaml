@@ -1,0 +1,34 @@
+{{- if .Values.persistence.enabled }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "mcp-client-bridge.fullname" . }}-data-pvc
+  labels:
+    {{- include "mcp-client-bridge.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.persistence.data.size }}
+  {{- if .Values.persistence.data.storageClassName }}
+  storageClassName: {{ .Values.persistence.data.storageClassName }}
+  {{- end }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "mcp-client-bridge.fullname" . }}-logs-pvc
+  labels:
+    {{- include "mcp-client-bridge.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.persistence.logs.size }}
+  {{- if .Values.persistence.logs.storageClassName }}
+  storageClassName: {{ .Values.persistence.logs.storageClassName }}
+  {{- end }}
+{{- end }}
