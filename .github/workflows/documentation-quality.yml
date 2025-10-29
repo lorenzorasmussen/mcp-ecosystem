@@ -9,6 +9,8 @@ on:
       - "**.md"
       - "docs/**"
       - ".specify/**"
+      - "SPECIFICATION/**"
+      - "SPECIFICATION.md"
 
 jobs:
   documentation-quality:
@@ -46,6 +48,10 @@ jobs:
       - name: Validate specification templates
         run: |
           node scripts/validate-specs.js
+
+      - name: Validate specification compliance
+        run: |
+          node scripts/specification-validator.js
 
       - name: Check documentation coverage
         run: |

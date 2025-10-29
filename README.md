@@ -1,22 +1,46 @@
-# MCP Documentation Orchestration System
+# MCP Ecosystem
 
-An advanced documentation orchestration system with GitHub Spec-Kit integration that maintains living documentation synchronized with code changes through intelligent drift detection and automated updates.
+> **📍 Model Context Protocol (MCP) Ecosystem**  
+> A comprehensive ecosystem for building interoperable AI systems with standardized protocols, tools, and documentation.
+
+## 🎯 Specification-Driven Development
+
+**📋 [SPECIFICATION.md](SPECIFICATION.md)** - _Authoritative Source of Truth_
+
+This ecosystem is governed by a comprehensive specification that defines:
+
+- **System Architecture** - Component design and relationships
+- **Protocol Standards** - MCP protocol specifications and compliance
+- **Development Standards** - Coding practices and quality requirements
+- **Documentation Requirements** - Living documentation standards
+- **Governance Processes** - Decision-making and change management
+
+> **⚠️ Important**: All development must align with the [SPECIFICATION.md](SPECIFICATION.md). This document is the single source of truth for the entire ecosystem.
+
+---
+
+## 🚀 Documentation Orchestration System
+
+Built on the specification foundation, this system provides:
 
 ## 🚀 Features
 
 ### Living Documentation
+
 - **Intelligent Synchronization**: Automatically detects code changes and updates documentation
 - **Drift Detection**: Identifies when documentation diverges from implementation
 - **Automated Updates**: Creates pull requests for critical documentation changes
 - **Real-time Monitoring**: Continuous health monitoring and metrics
 
 ### Spec-Kit Integration
+
 - **4-Phase Workflow**: Specify → Plan → Tasks → Implement
 - **AI-Assisted Generation**: Consistent specification creation
 - **Template System**: Standardized documentation formats
 - **Version Control**: Full audit trail of specification changes
 
 ### Quality Assurance
+
 - **Automated Validation**: Link checking, formatting, and content validation
 - **Health Dashboard**: Real-time metrics and coverage analysis
 - **CI/CD Integration**: Quality gates and automated testing
@@ -25,6 +49,7 @@ An advanced documentation orchestration system with GitHub Spec-Kit integration 
 ## 📋 Quick Start
 
 ### Prerequisites
+
 - Node.js 18+
 - Git repository
 - GitHub CLI (gh)
@@ -33,6 +58,7 @@ An advanced documentation orchestration system with GitHub Spec-Kit integration 
 ### Installation
 
 1. **Clone and Setup**
+
    ```bash
    git clone <repository-url>
    cd mcp-documentation-orchestration
@@ -40,6 +66,7 @@ An advanced documentation orchestration system with GitHub Spec-Kit integration 
    ```
 
 2. **Initialize Spec-Kit**
+
    ```bash
    npm run docs:init
    ```
@@ -52,21 +79,25 @@ An advanced documentation orchestration system with GitHub Spec-Kit integration 
 ### Basic Usage
 
 #### Check Documentation Health
+
 ```bash
 npm run docs:health
 ```
 
 #### Sync Documentation with Code
+
 ```bash
 npm run docs:sync
 ```
 
 #### Validate Specifications
+
 ```bash
 npm run docs:validate
 ```
 
 #### Run Complete Check
+
 ```bash
 npm run docs:check
 ```
@@ -103,18 +134,27 @@ npm run docs:check
 
 ```
 .
-├── .specify/                 # Spec-Kit configuration
-│   ├── constitution.md       # Project documentation principles
-│   ├── templates/           # Specification templates
-│   └── config.json          # Sync engine configuration
-├── .github/                 # GitHub integration
-│   ├── workflows/           # CI/CD workflows
+├── SPECIFICATION.md          # 📍 MAIN SPECIFICATION - Source of Truth
+├── SPECIFICATION/            # Specification system and templates
+│   ├── constitution.md       # Foundational principles and governance
+│   ├── templates/           # Standardized specification templates
+│   │   ├── spec-template.md
+│   │   ├── plan-template.md
+│   │   └── tasks-template.md
+│   └── config.json          # Specification system configuration
+├── docs/                    # Generated and maintained documentation
+│   ├── architecture/        # System architecture documentation
+│   ├── api/                 # API reference and contracts
+│   ├── development/         # Development guides and standards
+│   └── examples/            # Working examples and tutorials
+├── .github/                 # GitHub integration and workflows
+│   ├── workflows/           # CI/CD automation
 │   ├── specify.prompt.md    # AI prompts for /specify
 │   ├── plan.prompt.md       # AI prompts for /plan
 │   └── tasks.prompt.md      # AI prompts for /tasks
 ├── specs/                   # Feature specifications
 │   └── 001-*/               # Individual feature specs
-├── scripts/                 # Automation scripts
+├── scripts/                 # Automation and tooling
 │   ├── documentation-sync.js
 │   ├── documentation-health.js
 │   └── validate-specs.js
@@ -126,21 +166,25 @@ npm run docs:check
 The system tracks four key metrics:
 
 ### Coverage (30% weight)
+
 - Percentage of components with documentation
 - API endpoints, database models, services
 - Inline documentation detection
 
 ### Freshness (25% weight)
+
 - Age of documentation files
 - Stale content identification
 - Update frequency analysis
 
 ### Drift (25% weight)
+
 - Undocumented API endpoints
 - Outdated specifications
 - Code-documentation misalignment
 
 ### Quality (20% weight)
+
 - Broken links and formatting
 - Spelling and grammar validation
 - Template adherence
@@ -189,24 +233,28 @@ The system includes comprehensive CI/CD workflows:
 ## 📝 Specification Workflow
 
 ### 1. Specify (What & Why)
+
 ```bash
 # Create new feature specification
 gh issue create --title "Feature: User Authentication" --body "Use /specify command"
 ```
 
 ### 2. Plan (How)
+
 ```bash
 # Generate technical plan
 gh issue comment "Use /plan command"
 ```
 
 ### 3. Tasks (Breakdown)
+
 ```bash
 # Create task breakdown
 gh issue comment "Use /tasks command"
 ```
 
 ### 4. Implement (Build)
+
 - Develop according to specifications
 - Automated sync keeps documentation updated
 - Quality gates ensure compliance
@@ -214,18 +262,21 @@ gh issue comment "Use /tasks command"
 ## 🎯 Best Practices
 
 ### Documentation Standards
+
 - All public APIs must be documented
 - Specifications precede implementation
 - Use consistent formatting and templates
 - Include examples and acceptance criteria
 
 ### Development Workflow
+
 - Run `npm run docs:check` before committing
 - Address documentation drift immediately
 - Review auto-generated PRs promptly
 - Keep specifications up to date
 
 ### Quality Assurance
+
 - Monitor health dashboard regularly
 - Address quality issues proactively
 - Validate specifications before implementation
@@ -234,12 +285,15 @@ gh issue comment "Use /tasks command"
 ## 📈 Monitoring and Alerts
 
 ### Health Dashboard
+
 Access real-time metrics via:
+
 ```bash
 npm run docs:health
 ```
 
 ### Automated Alerts
+
 - Critical drift detection creates immediate PRs
 - Quality below 80% triggers team notifications
 - Stale documentation warnings after 30 days
