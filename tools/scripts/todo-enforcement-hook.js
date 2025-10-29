@@ -90,16 +90,27 @@ class TodoEnforcementHook {
       const todoDescription = (todo.description || "").toLowerCase();
 
       // Direct content match
-      if (todoTitle.includes(operationLower) || todoDescription.includes(operationLower)) {
+      if (
+        todoTitle.includes(operationLower) ||
+        todoDescription.includes(operationLower)
+      ) {
         return true;
       }
 
       // Context-based matching
-      if (context.file && (todoTitle.includes(context.file.toLowerCase()) || todoDescription.includes(context.file.toLowerCase()))) {
+      if (
+        context.file &&
+        (todoTitle.includes(context.file.toLowerCase()) ||
+          todoDescription.includes(context.file.toLowerCase()))
+      ) {
         return true;
       }
 
-      if (context.feature && (todoTitle.includes(context.feature.toLowerCase()) || todoDescription.includes(context.feature.toLowerCase()))) {
+      if (
+        context.feature &&
+        (todoTitle.includes(context.feature.toLowerCase()) ||
+          todoDescription.includes(context.feature.toLowerCase()))
+      ) {
         return true;
       }
 
@@ -123,19 +134,23 @@ class TodoEnforcementHook {
 
     if (existingTodos.length === 0) {
       // Create initial todo for this operation
-      const initialTodo = {
-        id: `${agentId}-${Date.now()}`,
-        content: `Execute ${operation} - ${new Date().toISOString()}`,
-        status: "in_progress",
-        priority: "medium",
-        agentId: agentId,
-        operation: operation,
-        createdAt: new Date().toISOString(),
-      };
+      const initialTodo = await this.todoService.createTodo(
+        {
+          title: `Execute ${operation}`,
+          description: `Execute ${operation} - ${new Date().toISOString()}`,
+          status: "pending",
+          priority: "medium",
+          category: "general",
+          context: { operation: operation },
+        },
+        agentId,
+      );
 
-      await this.todoService.createTodo(initialTodo);
+      // Start the todo immediately
+      await this.todoService.startTodo(initialTodo.id, agentId);
+
       console.log(
-        `📝 Created initial todo for agent ${agentId}: ${initialTodo.content}`,
+        `📝 Created initial todo for agent ${agentId}: ${initialTodo.title}`,
       );
 
       return { todoCreated: true, todo: initialTodo };
