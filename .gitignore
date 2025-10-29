@@ -18,6 +18,25 @@ out/
 .env.development.local
 .env.test.local
 .env.production.local
+.env.todo.clean
+
+# Coordination system files
+.llm-coordination.json
+.llm-session.json
+
+# Development configuration
+.eslintrc
+.prettierrc
+.gitconfig
+.gitmessage
+
+# Reports and temporary files
+reports/
+*.tmp
+*.log
+
+# Link checkers
+link_checker.*
 
 # IDE files
 .vscode/
