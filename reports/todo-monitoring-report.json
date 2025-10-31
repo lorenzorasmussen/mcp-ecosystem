@@ -1,0 +1,42 @@
+{
+  "title": "Todo System Monitoring Report",
+  "generated": "2025-10-29T16:58:56.348Z",
+  "summary": {
+    "complianceRate": "0%",
+    "totalAgents": 1,
+    "activeTodos": 0,
+    "totalTodos": 2
+  },
+  "alerts": [
+    {
+      "type": "compliance",
+      "severity": "warning",
+      "message": "Todo compliance rate is 0%, below threshold of 70%",
+      "data": {
+        "currentRate": 0,
+        "threshold": 70
+      }
+    },
+    {
+      "type": "activity",
+      "severity": "info",
+      "message": "No active todos found - all work may be completed",
+      "data": {
+        "totalTodos": 2,
+        "activeTodos": 0
+      }
+    }
+  ],
+  "recommendations": [
+    {
+      "priority": "high",
+      "action": "Enable strict todo enforcement",
+      "reason": "Low compliance rate indicates agents are not following todo workflow"
+    },
+    {
+      "priority": "medium",
+      "action": "Review completed todos and create new tasks",
+      "reason": "No active work may indicate all tasks are complete or system is idle"
+    }
+  ]
+}

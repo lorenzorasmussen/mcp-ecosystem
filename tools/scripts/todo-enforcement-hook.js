@@ -41,14 +41,17 @@ class TodoEnforcementHook {
     const activeTodos = await this.todoService.getActiveTodos(agentId);
 
     if (activeTodos.length === 0) {
+      const errorMessage = this.buildDetailedErrorMessage(
+        "no_active_todos",
+        agentId,
+        operation,
+        context,
+      );
+
       if (this.strictMode) {
-        throw new Error(
-          `❌ Todo Enforcement: Agent ${agentId} must create todos before executing ${operation}. Use TodoWrite tool first.`,
-        );
+        throw new Error(errorMessage);
       } else {
-        console.warn(
-          `⚠️ Warning: Agent ${agentId} should create todos before executing ${operation}`,
-        );
+        console.warn(`⚠️ Warning: ${errorMessage}`);
         return { valid: true, warning: true };
       }
     }
@@ -61,14 +64,18 @@ class TodoEnforcementHook {
     );
 
     if (relevantTodos.length === 0) {
+      const errorMessage = this.buildDetailedErrorMessage(
+        "no_relevant_todos",
+        agentId,
+        operation,
+        context,
+        activeTodos,
+      );
+
       if (this.strictMode) {
-        throw new Error(
-          `❌ Todo Enforcement: No relevant todos found for operation ${operation}. Create a todo first.`,
-        );
+        throw new Error(errorMessage);
       } else {
-        console.warn(
-          `⚠️ Warning: No relevant todos for ${operation}. Consider creating a todo.`,
-        );
+        console.warn(`⚠️ Warning: ${errorMessage}`);
         return { valid: true, warning: true };
       }
     }
@@ -77,6 +84,79 @@ class TodoEnforcementHook {
       `✅ Todo validation passed: Found ${relevantTodos.length} relevant todos`,
     );
     return { valid: true, relevantTodos, warning: false };
+  }
+
+  /**
+   * Build detailed error message for todo enforcement
+   */
+  buildDetailedErrorMessage(
+    errorType,
+    agentId,
+    operation,
+    context,
+    activeTodos = [],
+  ) {
+    const baseMessage = `🚫 TODO ENFORCEMENT BLOCKED\n\n`;
+
+    const errorDetails = {
+      no_active_todos: {
+        reason: `Agent '${agentId}' has no active todos`,
+        explanation: `All LLMs in this system must create and manage todos before executing operations. This ensures proper task tracking, collaboration, and accountability.`,
+        solution: `Create a todo first using: node tools/scripts/shared-todo-cli.js create ${agentId} "${operation}"`,
+      },
+      no_relevant_todos: {
+        reason: `No relevant todos found for operation '${operation}'`,
+        explanation: `The operation '${operation}' doesn't match any of your active todos. Each operation should have a corresponding todo for tracking.`,
+        solution: `Create a relevant todo or update existing todos to match this operation.`,
+      },
+    };
+
+    const details = errorDetails[errorType];
+    if (!details) return `${baseMessage}Unknown error type: ${errorType}`;
+
+    let message = baseMessage;
+    message += `📋 ERROR DETAILS:\n`;
+    message += `   • Reason: ${details.reason}\n`;
+    message += `   • Operation: ${operation}\n`;
+    message += `   • Agent: ${agentId}\n`;
+    message += `   • Source: Todo Enforcement Hook (tools/scripts/todo-enforcement-hook.js)\n\n`;
+
+    message += `💡 WHY THIS HAPPENS:\n`;
+    message += `   ${details.explanation}\n\n`;
+
+    message += `✅ HOW TO FIX:\n`;
+    message += `   ${details.solution}\n\n`;
+
+    if (activeTodos.length > 0) {
+      message += `📝 YOUR CURRENT ACTIVE TODOS:\n`;
+      activeTodos.slice(0, 3).forEach((todo) => {
+        message += `   • ${todo.title} (ID: ${todo.id})\n`;
+      });
+      if (activeTodos.length > 3) {
+        message += `   ... and ${activeTodos.length - 3} more\n`;
+      }
+      message += `\n`;
+    }
+
+    message += `🔧 CREATE A NEW TODO:\n`;
+    message += `   node tools/scripts/shared-todo-cli.js create ${agentId} "${operation}"\n\n`;
+
+    message += `📊 CHECK SYSTEM STATUS:\n`;
+    message += `   node tools/scripts/shared-todo-cli.js status\n\n`;
+
+    message += `⚙️ IF THIS IS A FALSE POSITIVE:\n`;
+    message += `   Edit configuration: .env.todo\n`;
+    message += `   Set: TODO_ENFORCEMENT_STRICT=false\n`;
+    message += `   Or disable for specific operations in the config\n\n`;
+
+    message += `📖 LEARN MORE:\n`;
+    message += `   Read: SHARED_TODO_SYSTEM_GUIDE.md\n`;
+    message += `   Read: TODO_ENFORCEMENT_GUIDE.md\n\n`;
+
+    message += `🚨 This operation has been BLOCKED to maintain system accountability.\n`;
+    message += `   Please create a todo and try again.`;
+
+    return message;
   }
 
   /**

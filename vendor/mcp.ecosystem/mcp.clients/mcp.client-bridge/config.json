@@ -1,0 +1,25 @@
+{
+  "database": {
+    "path": "/Users/lorenzorasmussen/.local/share/mcp/vendor/mcp.ecosystem/mcp.clients/mcp.client-bridge/mcp-client-bridge.db",
+    "options": {
+      "journalMode": "WAL",
+      "synchronous": "NORMAL",
+      "cacheSize": 10000,
+      "lockingMode": "NORMAL",
+      "tempStore": "MEMORY"
+    }
+  },
+  "migrations": {
+    "autoRun": true,
+    "directory": "/Users/lorenzorasmussen/.local/share/mcp/vendor/mcp.ecosystem/mcp.clients/mcp.client-bridge/migrations"
+  },
+  "logging": {
+    "level": "info",
+    "file": "/Users/lorenzorasmussen/.local/share/mcp/vendor/mcp.ecosystem/mcp.clients/mcp.client-bridge/logs/mcp-client-bridge.log"
+  },
+  "performance": {
+    "connectionTimeout": 30000,
+    "maxRetries": 3,
+    "retryDelay": 1000
+  }
+}

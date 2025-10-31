@@ -1,15 +1,145 @@
 {
   "metadata": {
     "version": "2.0",
-    "lastUpdated": "2025-10-29T15:35:49.761Z",
-    "totalTasks": 0,
+    "lastUpdated": "2025-10-29T16:52:31.188Z",
+    "totalTasks": 2,
     "activeTasks": 0,
-    "completedTasks": 0,
+    "completedTasks": 1,
     "agents": {},
-    "categories": {}
+    "categories": {
+      "general": 2
+    }
   },
-  "tasks": [],
-  "agents": {},
+  "tasks": [
+    {
+      "id": "todo-1761756459047-84cy6fouf",
+      "title": "Test save functionality",
+      "description": "Testing if save works",
+      "status": "completed",
+      "priority": "medium",
+      "category": "general",
+      "tags": [],
+      "createdBy": "test-agent",
+      "createdAt": "2025-10-29T16:47:39.047Z",
+      "assignedTo": "test-agent",
+      "assignedAt": "2025-10-29T16:49:05.186Z",
+      "assignedBy": "test-agent",
+      "startedAt": "2025-10-29T16:49:05.184Z",
+      "completedAt": "2025-10-29T16:49:29.464Z",
+      "completedBy": "test-agent",
+      "estimatedTime": null,
+      "actualTime": null,
+      "context": {},
+      "dependencies": [],
+      "subtasks": [],
+      "comments": [],
+      "workflowId": null,
+      "parentTaskId": null,
+      "childTaskIds": [],
+      "history": [
+        {
+          "action": "created",
+          "agentId": "test-agent",
+          "timestamp": "2025-10-29T16:47:39.049Z",
+          "details": {
+            "initialData": {
+              "title": "Test save functionality",
+              "description": "Testing if save works"
+            }
+          }
+        },
+        {
+          "action": "started",
+          "agentId": "test-agent",
+          "timestamp": "2025-10-29T16:49:05.186Z",
+          "details": {}
+        },
+        {
+          "action": "completed",
+          "agentId": "test-agent",
+          "timestamp": "2025-10-29T16:49:29.490Z",
+          "details": {
+            "result": "completed",
+            "notes": ""
+          }
+        }
+      ],
+      "result": "completed"
+    },
+    {
+      "id": "todo-1761756751185-wz232d2wl",
+      "title": "Test save functionality 2",
+      "description": "Testing if save works",
+      "status": "pending",
+      "priority": "medium",
+      "category": "general",
+      "tags": [],
+      "createdBy": "test-agent",
+      "createdAt": "2025-10-29T16:52:31.185Z",
+      "assignedTo": null,
+      "assignedAt": null,
+      "assignedBy": null,
+      "startedAt": null,
+      "completedAt": null,
+      "completedBy": null,
+      "estimatedTime": null,
+      "actualTime": null,
+      "context": {},
+      "dependencies": [],
+      "subtasks": [],
+      "comments": [],
+      "workflowId": null,
+      "parentTaskId": null,
+      "childTaskIds": [],
+      "history": [
+        {
+          "action": "created",
+          "agentId": "test-agent",
+          "timestamp": "2025-10-29T16:52:31.187Z",
+          "details": {
+            "initialData": {
+              "title": "Test save functionality 2",
+              "description": "Testing if save works"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "agents": {
+    "test-agent": {
+      "totalCreated": 2,
+      "totalAssigned": 0,
+      "totalCompleted": 0,
+      "activeTasks": 0,
+      "completionRate": 0,
+      "averageCompletionTime": 0,
+      "lastActivity": "2025-10-29T16:52:31.187Z",
+      "skills": [],
+      "preferences": {}
+    }
+  },
   "workflows": {},
-  "auditLog": []
+  "auditLog": [
+    {
+      "id": "audit-1761756459049-gptaovu89",
+      "action": "todo_created",
+      "agentId": "test-agent",
+      "timestamp": "2025-10-29T16:47:39.049Z",
+      "details": {
+        "todoId": "todo-1761756459047-84cy6fouf",
+        "title": "Test save functionality"
+      }
+    },
+    {
+      "id": "audit-1761756751187-7aapztclc",
+      "action": "todo_created",
+      "agentId": "test-agent",
+      "timestamp": "2025-10-29T16:52:31.187Z",
+      "details": {
+        "todoId": "todo-1761756751185-wz232d2wl",
+        "title": "Test save functionality 2"
+      }
+    }
+  ]
 }
