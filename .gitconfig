@@ -1,0 +1,79 @@
+# Git Aliases for MCP Ecosystem
+
+# Basic aliases
+alias.st=status
+alias.ci=commit
+alias.co=checkout
+alias.br=branch
+alias.pl=pull
+alias.ps=push
+
+# Workflow aliases
+alias.lg=log --oneline --graph --decorate
+alias.hist=log --pretty=format:"%h %ad | %s%d [%an]" --graph --date=short
+alias.last=log -1 --stat
+alias.d=diff
+alias.ds=diff --staged
+alias.a=add
+
+# Branching aliases
+alias.b=branch
+alias.ba=branch -a
+alias.bd=branch -d
+alias.bD=branch -D
+
+# Commit aliases
+alias.ca=commit --amend
+alias.cae=commit --amend --no-edit
+alias.cm=commit -m
+
+# Push/Pull aliases
+alias.pp='pull && push'
+alias.pf=push --force-with-lease
+alias.pt=push --tags
+
+# Stash aliases
+alias.s=stash
+alias.sp=stash pop
+alias.sl=stash list
+
+# MCP-specific aliases
+alias.fea='checkout -b feature/'
+alias.fix='checkout -b bugfix/'
+alias.rel='checkout -b release/'
+alias.hot='checkout -b hotfix/'
+alias.pr='pull-request'  # Requires hub CLI tool
+
+# Reset aliases
+alias.unstage='reset HEAD --'
+alias.undiff='checkout --'
+alias.undo='reset --soft HEAD~1'
+alias.undoc='reset --hard HEAD~1'
+
+# Useful functions
+# Create a new feature branch and switch to it
+create-feature = "!f() { git checkout -b feature/$1; }; f"
+
+# Create a new bugfix branch and switch to it
+create-bugfix = "!f() { git checkout -b bugfix/$1; }; f"
+
+# Create a new release branch and switch to it
+create-release = "!f() { git checkout -b release/v$1; }; f"
+
+# Sync with remote develop branch
+sync-develop = "!f() { git checkout develop && git pull origin develop; }; f"
+
+# Sync with remote main branch
+sync-main = "!f() { git checkout main && git pull origin main; }; f"
+
+# Show branches sorted by last commit date
+recent-branches = "!git for-each-ref --sort=-committerdate --format='%(refname:short)' refs/heads/"
+
+# Show commit count by author
+commits-by-author = "!git shortlog -s -n --all"
+
+# Clean up merged branches
+cleanup-merged = "!git branch --merged | grep -v '\\*\\|main\\|develop' | xargs -n 1 git branch -d"
+
+# Show large files in repository
+large-files = "!git rev-list --objects --all | git cat-file --batch-check='%(objectname) %(objecttype) %(objectsize) %(deltabase)' | sed -n 's/^\\(.\\{7\\}\\) blob \\([0-9]\\+\\) .*/\\1 \\2/p' | sort -n -k 2 | tail -10 | while read -r hash size; do echo \"\\$(git rev-parse --short HEAD):\\$hash (\\$size bytes) \\$(git ls-tree -r HEAD --name-only | grep -E \"\\$hash\$\")\"; done"

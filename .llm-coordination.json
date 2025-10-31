@@ -1,0 +1,82 @@
+{
+  "sessions": {
+    "llm-1761759670998-sg4o8ggsz": {
+      "user": {
+        "name": "Documentation Agent",
+        "email": "docs@mcp-ecosystem.local"
+      },
+      "project": "mcp-ecosystem",
+      "branch": "develop",
+      "activity": "working on documentation improvements",
+      "startTime": 1761759671136,
+      "lastActivity": 1761759671136
+    },
+    "llm-1761760150283-2zu38qwjh": {
+      "user": {
+        "name": "Documentation Agent",
+        "email": "docs@mcp-ecosystem.local"
+      },
+      "project": "mcp-ecosystem",
+      "branch": "develop",
+      "activity": "working on: Implement user authentication",
+      "startTime": 1761760150475,
+      "lastActivity": 1761760150475
+    },
+    "llm-1761760286860-sxymujj0v": {
+      "user": {
+        "name": "Documentation Agent",
+        "email": "docs@mcp-ecosystem.local"
+      },
+      "project": "mcp-ecosystem",
+      "branch": "develop",
+      "activity": "working on: Implement user authentication",
+      "startTime": 1761760287021,
+      "lastActivity": 1761760287021
+    },
+    "llm-1761762236447-bokianp6w": {
+      "user": {
+        "name": "Documentation Agent",
+        "email": "docs@mcp-ecosystem.local"
+      },
+      "project": "test-project",
+      "branch": "develop",
+      "activity": "testing unified coordinator",
+      "startTime": 1761762236562,
+      "lastActivity": 1761762236562
+    },
+    "llm-1761762521898-ph7egkfzd": {
+      "user": {
+        "name": "Documentation Agent",
+        "email": "docs@mcp-ecosystem.local"
+      },
+      "project": "test-project",
+      "branch": "develop",
+      "activity": "testing unified coordinator",
+      "startTime": 1761762522114,
+      "lastActivity": 1761762522114
+    },
+    "llm-1761763417750-jf5q1gxl9": {
+      "user": {
+        "name": "Documentation Agent",
+        "email": "docs@mcp-ecosystem.local"
+      },
+      "project": "mcp-ecosystem",
+      "branch": "main",
+      "activity": "Test MCP integration",
+      "startTime": 1761763417979,
+      "lastActivity": 1761763417979
+    }
+  },
+  "branches": {
+    "develop": [
+      "llm-1761759670998-sg4o8ggsz",
+      "llm-1761760150283-2zu38qwjh",
+      "llm-1761760286860-sxymujj0v",
+      "llm-1761762236447-bokianp6w",
+      "llm-1761762521898-ph7egkfzd"
+    ],
+    "main": [
+      "llm-1761763417750-jf5q1gxl9"
+    ]
+  }
+}
