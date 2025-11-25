@@ -1,9 +1,9 @@
-import { documentation-health } from './documentation-health';
+import DocumentationHealthMonitor from './documentation-health.js';
 
 describe('documentation-health', () => {
   // TODO: Add comprehensive tests
   it('should be defined', () => {
-    expect(documentation-health).toBeDefined();
+    expect(DocumentationHealthMonitor).toBeDefined();
   });
 
   // Add more test cases based on function analysis
