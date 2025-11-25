@@ -1,6 +1,7 @@
 {
   "testEnvironment": "node",
-  "testMatch": ["**/tests/*-cjs.test.js", "**/tests/simple-setup.js"],
+  "testMatch": ["**/tests/*-cjs.test.js"],
+  "setupFilesAfterEnv": ["./tests/simple-setup.js"],
   "collectCoverage": true,
   "collectCoverageFrom": [
     "src/*-cjs.js",
