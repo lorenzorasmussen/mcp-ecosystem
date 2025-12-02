@@ -1,9 +1,9 @@
-import { documentation-sync } from './documentation-sync';
+import DocumentationSyncEngine from './documentation-sync.js';
 
 describe('documentation-sync', () => {
   // TODO: Add comprehensive tests
   it('should be defined', () => {
-    expect(documentation-sync).toBeDefined();
+    expect(DocumentationSyncEngine).toBeDefined();
   });
 
   // Add more test cases based on function analysis
